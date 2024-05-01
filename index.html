@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eluwa Monday - WDD 230 - Web Front Development</title>
+    <meta name="description" content="web development| wdd230|Byupathway|learning|web content writing|eluwa monday|WDD 230 - Web Frontend Development|course assignment portal|course homepage.">
+    <meta name="author" content="Eluwa Monday">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/larger.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="images/my_official_pics.jpg" alt="eluwa photo" width="100" height="100">
+            <span>Eluwa Monday</span>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="chamber.html">Chamber</a></li>
+            <li><a href="site-plan.html">Site Plan</a></li>
+            <li><a href="form.html">Form</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>
+            WDD 230: Web Frontend Development
+        </h1>
+        
+        <div class="parent">
+            <section class="card">
+                <h2>
+                    Learning Activities
+                </h2>
+                <ul>
+                    <li><a href="#">Week 01:</a></li>
+                    <li><a href="#">Week 02:</a></li>
+                    <li><a href="#">Week 03:</a></li>
+                    <li><a href="#">Week 04:</a></li>
+                    <li><a href="#">Week 05:</a></li>
+                    <li><a href="#">Week 06:</a></li>
+                </ul>
+
+            </section>
+            <section class="card">
+                <h2>
+                    Information
+                </h2>
+
+                <p>Weather: <span id="weather">Null</span></p>
+
+                <p>Visits: <span id="visits">Null</span></p>
+
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; <span id="year"></span> Eluwa Monday</p>
+            <p>Last Updated</p>
+            <p id="lastModified"></p>
+            <span>Nigeria</span>
+        </div>
+    </footer>
+    <script src="scripts/getDates.js"></script>    
+</body>
+</html>

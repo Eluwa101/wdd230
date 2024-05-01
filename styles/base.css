@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+header{
+    font-family: 'Roboto', sans-serif;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: black;
+ }
+
+header, footer {
+    background-color:#133748;
+    color: #fff;
+    text-align: center;
+}
+
+.header-content {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content span {
+    font-size: 2rem; 
+    font-weight: bold; 
+}
+
+.header-content img {
+    border-radius: 25px; 
+    margin-right: 10px;
+    padding: 5px;
+    box-shadow: 2px 2px 20px black;
+}
+
+
+header, nav{
+    margin-top: 5px;
+}
+
+nav {
+    background-color: #133748;
+    padding: 10px;
+}
+
+
+nav ul {
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: block;
+}
+
+nav a {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px; 
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #66c0cc;
+    color:black;
+}
+
+nav .active {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+    text-decoration: underline;
+    margin: 2rem 2vw;
+    padding: 10px;
+}
+
+h2 {
+    text-align: center;
+    padding: 5px;
+    background-color: #133748;
+    margin: auto;
+}
+
+p {
+    padding: 10px 20px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.parent {
+    margin: 2rem 2vw;
+}
+
+.parent section {
+    border: 3px solid rgb(0, 0, 0)
+    ;
+    background-color: #66c0cc;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 4px 6px 20px grey;
+}
+
+main ul li {
+    list-style-type: none;
+    padding: 10px 0 0 20px;
+}
+
+main a {
+    color: #050505;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card {
+    margin: 15px 0 15px;
+}
+
+.card ul li a:hover{
+    color: rgb(253, 254, 255);
+}
+.card p {
+    color: black;
+}
+
+footer div {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    display: block;
+}
