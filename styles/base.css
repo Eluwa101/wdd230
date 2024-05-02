@@ -11,7 +11,7 @@ header{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: black;
+    color: rgb(255, 255, 255);
  }
 
 header, footer {
@@ -122,6 +122,9 @@ main a {
 
 .card {
     margin: 15px 0 15px;
+}
+.card span{
+    color: rgb(5, 5, 5);
 }
 
 .card ul li a:hover{
