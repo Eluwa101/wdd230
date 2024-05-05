@@ -6,12 +6,14 @@ header{
 }
 
 *{
-    margin: 0;
-    padding: 0;
+    /* margin: 0; */
+    /* padding: 0; */
     box-sizing: border-box;
     color: rgb(255, 255, 255);
  }
-
+h1 {
+    color: #133748;
+}
 header, footer {
     background-color:#133748;
     color: #fff;
@@ -132,9 +134,87 @@ main a {
     color: black;
 }
 
+
+/* Hamburger menu styles */
+#menu {
+    font-size: 1.5rem;
+    background-color: #133748;
+    cursor: pointer;
+}
+
+#menu::before {
+    content: "☰";
+}
+
+#menu.open::before {
+    content: "❌";
+}
+
+.navigation {
+    display: none;
+    width: 100%;
+    background-color: #66c0cc ;
+    padding: 1rem 0;
+}
+
+.navigation.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navigation a {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.navigation a:hover {
+    background-color: #133748;
+}
+
+
+/* Light mode styles */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --heading-color: #000000;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode {
+    --bg-color: #333333;
+    --text-color: #ffffff;
+    --heading-color: #ffffff;
+  }
+  
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  h1 {
+    color: var(--heading-color);
+  }
+#theme-toggle{
+    background-color: #000000;
+    margin-left: 200px;
+}
+
+
 footer div {
     display: flex; 
     align-items: center;
     justify-content: center;
     display: block;
+}
+@media (min-width: 600px) {
+    #menu {
+        display: flex; 
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: column;
+    }
 }

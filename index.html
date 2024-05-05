@@ -6,25 +6,38 @@
     <title>Eluwa Monday - WDD 230 - Web Frontend Development</title>
     <meta name="description" content="web development| wdd230|Byupathway|learning|web content writing|eluwa monday|WDD 230 - Web Frontend Development|course assignment portal|course homepage.">
     <meta name="author" content="Eluwa Monday">
+
+    <meta property="og:title" content="Eluwa Monday - WDD 230 - Web Frontend Development">
+    <meta property="og:type" content="portfolio website on Web frontend development" />
+    <meta property="og:description" content="The homepage containing links to all the works ELuwa Monday has done so far.">
+    <meta property="og:image" content="https://images.app.goo.gl/mR5RJg1RctNLFbUh6">
+    <meta property="og:url" content="https://eluwa101.github.io/wdd230/index.html">
+
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/larger.css">
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
     <header>
         <div class="header-content">
             <img src="images/my_official_pics.jpg" alt="eluwa photo" width="100" height="100">
             <span>Eluwa Monday</span>
-        </div>
+        <!-- </div> -->
+        <button id="theme-toggle">Toggle Dark Mode</button>
+        <!-- </div> -->
     </header>
     <nav>
         <ul>
             <li class="active"><a href="index.html">Home</a></li>
             <li><a href="chamber.html">Chamber</a></li>
-            <li><a href="week01/chamber-site-plan.html">Site Plan</a></li>
+            <li><a href="week01/chamber-site-plan.html" target="_blank">Site Plan</a></li>
             <li><a href="form.html">Form</a></li>
         </ul>
     </nav>
@@ -36,18 +49,15 @@
         
         <div class="parent">
             <section class="card">
-                <h2>
-                    Learning Activities
-                </h2>
-                <ul>
-                    <li><a href="week01/holygrail.html">Week 01:</a></li>
-                    <li><a href="#">Week 02:</a></li>
+                <button id="menu" aria-label="Toggle Menu"> Learning Activities</button>
+                <ul class="navigation">
+                    <li><a href="week01/holygrail.html" target="_blank">Week 01:</a></li>
+                    <li><a href="week02/design.html" target="_blank">Week 02:</a></li>
                     <li><a href="#">Week 03:</a></li>
                     <li><a href="#">Week 04:</a></li>
                     <li><a href="#">Week 05:</a></li>
                     <li><a href="#">Week 06:</a></li>
                 </ul>
-
             </section>
             <section class="card">
                 <h2>
@@ -65,7 +75,7 @@
     <footer>
         <div class="footer-content">
             <p>&copy; <span id="year"></span> Eluwa Monday</p>
-            <p>Last Updated</p>
+            <p>Last Updated:</p>
             <p id="lastModified"></p>
             <span>Nigeria</span>
         </div>
