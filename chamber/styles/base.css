@@ -1,0 +1,197 @@
+/* main CSS styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #000000;
+}
+
+header {
+    background-color: #07395f;
+    color: #fff;
+    /* padding: 10px; */
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+header h1{
+    color: white;
+    padding-top: 10px;
+}
+#hero div h1{
+    color: rgb(238, 143, 20);
+}
+#hero div a{
+    color: #fff;
+    text-decoration: none;
+    background-color: #C56E3E;
+    padding: 10px;
+}
+#hero div a:hover{
+    background-color: #55cbd3;
+    color: #000000;
+}
+
+
+#hero {
+    background-color: #07395f;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+
+#hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+#hero img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+}
+
+#hero p {
+    font-size: 18px;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+/* #hero{
+    margin: 0 auto;
+} */
+
+nav {
+    background-color: #07395f;
+    color: #07395f;
+    padding-top: 100px;
+    margin-bottom:  20px ;
+    display: flex;
+    position: fixed;
+    margin: 0 auto;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 10px 10px;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+    background-color: #C56E3E;
+}
+
+nav ul li a {
+    background-color: #55cbd3;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+
+.event-heading {
+    text-align: center;
+    font-size: 24px; /* Adjust the font size as needed */
+    margin-bottom: 20px; /* Add margin to separate from events */
+    grid-column: 1/span 3;
+} 
+
+#current-events {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid with minimum item width of 300px */
+    gap: 20px; /* Gap between grid items */
+    padding: 20px; /* Padding for the section */
+    grid-area: auto;
+}
+
+#current-events h2 {
+    text-align: center;
+} 
+
+.event {
+    background-color: #f0f0f0; /* Example background color for events */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect to the events */
+}
+
+.event img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.event p {
+    margin-bottom: 10px;
+}
+
+.event a {
+    display: block;
+    background-color: #07395f; /* Button background color */
+    color: #fff; /* Button text color */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    width: 90px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.event a:hover {
+    background-color: #C56E3E;
+    color: #000;
+}
+
+.weather-info p{
+    text-align: center;
+
+}
+.weather-info{
+    background-color: #55cbd3;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #1b6192;
+    padding-bottom: 20px;
+}
+section h2 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+h1, h2 {
+    color: #1b6192;
+}
+
+ul, ol {
+    margin-left: 20px;
+}
+
+footer {
+    background-color: #07395f;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: small;
+    
+}

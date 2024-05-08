@@ -1,0 +1,55 @@
+
+/* Hamburger menu styles */
+#hamburger-btn {
+    display: none; /* Hidden by default */
+}
+
+@media only screen and (max-width: 768px) {
+    #main-nav {
+        display: none;
+        /* position: absolute; */
+        top: 90px;
+        right: 0;
+        width: 50%;
+        background-color: #07395f;
+        z-index: 1000;
+        width: auto;
+    }
+
+    #main-nav ul {
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    #main-nav ul li {
+        margin: 10px;
+    }
+
+    #main-nav ul li a {
+        color: #000000;
+        text-decoration: none;
+        padding: 10px;
+    }
+
+    #main-nav ul li a:hover {
+        color: #07395f;
+    }
+    #main-nav.active {
+        display: block;
+    }
+
+    #hamburger-btn {
+        display: block;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 2000;
+        background-color: transparent;
+        border: none;
+        color: #55cbd3;
+        font-size: 24px;
+        cursor: pointer;
+        /* margin-top: 40px; */
+    }
+}
