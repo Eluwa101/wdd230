@@ -40,7 +40,7 @@ header h1{
 #hero {
     background-color: #07395f;
     color: #fff;
-    padding: 100px 0;
+    padding: 50px 50px;
     text-align: center;
 }
 
@@ -49,11 +49,7 @@ header h1{
     margin-bottom: 20px;
 }
 
-#hero img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 20px;
-}
+
 
 #hero p {
     font-size: 18px;
@@ -105,18 +101,18 @@ main {
 }
 
 
-.event-heading {
+.event-heading{
     text-align: center;
-    font-size: 24px; /* Adjust the font size as needed */
-    margin-bottom: 20px; /* Add margin to separate from events */
+    font-size: 24px;
+    margin-bottom: 20px;
     grid-column: 1/span 3;
 } 
 
 #current-events {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid with minimum item width of 300px */
-    gap: 20px; /* Gap between grid items */
-    padding: 20px; /* Padding for the section */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 20px;
+    padding: 20px;
     grid-area: auto;
 }
 
@@ -125,10 +121,10 @@ main {
 } 
 
 .event {
-    background-color: #f0f0f0; /* Example background color for events */
+    background-color: #f0f0f0;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect to the events */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 2);
 }
 
 .event img {
@@ -143,19 +139,61 @@ main {
 
 .event a {
     display: block;
-    background-color: #07395f; /* Button background color */
-    color: #fff; /* Button text color */
+    background-color: #07395f; 
+    color: #fff;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
     width: 90px;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    transition: background-color 0.3s ease; 
 }
 
 .event a:hover {
     background-color: #C56E3E;
     color: #000;
+}
+
+#spotlights_card {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+#spotlights_card h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #07395f;
+}
+
+.spotlight {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    /* padding: 20px; */
+    transition: box-shadow 0.3s ease;
+}
+
+.spotlight:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.spotlight img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.spotlight p {
+    color: #333333;
+    font-size: 16px;
+    line-height: 1.6;
+    /* margin-left: 10 px; */
+    padding-left: 20px;
+    overflow: hidden;
+    width: 50%;
 }
 
 .weather-info p{
