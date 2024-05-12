@@ -73,7 +73,7 @@
     }
 
     .spotlight {
-        display: block; /* Change to block layout for smaller screens */
+        display: block; 
         padding: 15px;
     }
 
