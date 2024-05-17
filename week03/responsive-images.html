@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/responsive-images.css">
+    <title>Responsive images</title>
+</head>
+<body>
+    <header>
+        <h1>Responsive images</h1>
+    </header>
+<main>
+    <div class="hero">
+        <picture>
+            <source media="(max-width:500px)" srcset="images/temple_image_small.webp">
+            <source media="(max-width: 1000px)" srcset="images/temple_image_med.webp">
+            <img src="images/temple_image_max.webp" alt="temple in washington DC image" width="1278" height="800">
+        </picture>
+    </div>
+</main>
+    <footer>
+
+    </footer>
+</body>
+</html>

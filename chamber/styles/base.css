@@ -8,6 +8,10 @@ body {
     color: #000000;
 }
 
+#menu {
+    display: none;
+}
+
 header {
     background-color: #07395f;
     color: #fff;
