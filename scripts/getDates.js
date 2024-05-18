@@ -34,3 +34,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateElementWithDate("lastModified", new Date(document.lastModified));
 });
+
+// Visits
+
+// Here getting the element
+const visitsElement = document.getElementById('visits');
+function updateVisitCounter() {
+    let visitCount = localStorage.getItem('visitCount');
+
+// If no visit count exists, make it to be 0
+    if (!visitCount) {
+        visitCount = 0;
+    }
+    // otherwise
+    visitCount++;
+
+    // do the setitem in localStorage
+    localStorage.setItem('visitCount', visitCount);
+    visitsElement.textContent = visitCount;
+}
+updateVisitCounter();
