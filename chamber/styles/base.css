@@ -237,8 +237,12 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     font-size: small;
-    
 }
+
+.contact-info,.development-info, .social-media{
+    color: white;
+}
+
 .social-media a{
     color: #f0f0f0;
 }
