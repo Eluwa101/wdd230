@@ -153,6 +153,8 @@ main {
     transition: background-color 0.3s ease; 
 }
 
+
+
 .event a:hover {
     background-color: #C56E3E;
     color: #000;
@@ -236,4 +238,76 @@ footer {
     grid-template-columns: 1fr 1fr 1fr;
     font-size: small;
     
+}
+
+
+
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    font-family: Arial, sans-serif;
+}
+
+
+
+#sidebar {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#main-content {
+    padding: 20px;
+}
+
+.photos img {
+    width: 75%;
+    height: auto;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photos img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+
+
+h2, h3 {
+    color: #333;
+}
+
+#sidebar h2, #sidebar h3 {
+    transition: color 0.3s ease;
+}
+
+#sidebar h2:hover, #sidebar h3:hover {
+    color: #0e5f76;
+}
+
+#sidebar a {
+    color: #0e5f76;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#sidebar a:hover {
+    color: #333;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #0e5f76;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #333;
 }
