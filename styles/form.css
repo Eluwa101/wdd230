@@ -84,7 +84,7 @@
 #thanks{
     color: var(--primary-color);
     text-align: center;
-    margin-top: 20px 70px; 
+    margin-bottom: 70px; 
+    text-wrap: stable;
 
-    
 }  
