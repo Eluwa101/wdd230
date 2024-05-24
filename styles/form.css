@@ -1,0 +1,90 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --border-color: #ccc;
+  }
+  
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 60px;
+  }
+  
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="range"],
+  button[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #000;
+  }
+  
+  input[type="range"] {
+    width: calc(100% - 30px);
+  }
+  
+  button[type="submit"] {
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  #ratingDisplay {
+    display: inline-block;
+    margin-left: 10px;
+    color: #000;
+  }
+  
+  label[for="username"],
+  label[for="password"],
+  label[for="confirmPassword"],
+  label[for="email"],
+  label[for="pageRating"] {
+    font-weight: bold;
+  }
+  label[for="pageRating"] {
+    font-weight: bold;
+    margin-top: 40px;
+  }
+  
+  input:required {
+    border-color: var(--primary-color);
+  }
+  
+  input:invalid {
+    border-color: red;
+  }
+  
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+
+#thanks{
+    color: var(--primary-color);
+    text-align: center;
+    margin-top: 20px 70px; 
+
+    
+}  

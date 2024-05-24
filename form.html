@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/form.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/larger.css">
     <link rel="icon" href="favicon.ico">
@@ -38,7 +39,7 @@
             <li class="active"><a href="index.html">Home</a></li>
             <li><a href="chamber/index.html">Chamber</a></li>
             <li><a href="week01/chamber-site-plan.html" target="_blank">Site Plan</a></li>
-            <li><a href="form.html">Form</a></li>
+            <li><a href="Form-start/index.html">Form</a></li>
         </ul>
     </nav>
     <div class="hero">
@@ -55,30 +56,42 @@
         <h1>
             WDD 230: Web Frontend Development
         </h1>
-        
-        <div class="parent">
-            <section class="card">
-                <h2> Learning Activities</h2>
-                <button id="menu" aria-label="Toggle Menu"></button>
-                <ul class="navigation">
-                    <li><a href="week01/holygrail.html" target="_blank">Week 01:</a></li>
-                    <li><a href="week02/design.html" target="_blank">Week 02:</a>|<a href="week02/bom.html">BoM</a>|<a href="https://codepen.io/Eluwa-Monday/pen/GRLVREM">Hamburger</a></li>
-                    <li><a href="week03/lazyload.html">Week03:</a>|<a href="week02/bom.html">BoM</a>|<a href="week03/lazyload.html">LazyLoad</a>|<a href="week03/responsive-images.html">Responsive</a></li>
-                    <li><a href="#">Week 04:</a>|<a href="https://codepen.io/Eluwa-Monday/pen/ExzyKdB" target="_blank">Pseudo-class</a>|<a href="week04/combinator.html">combinator</a>|<a href="week04/tablebuild.html">Table</a>|<a href="Form-start/index.html">Form</a></li>
-                    <li><a href="#">Week 05:</a></li>
-                    <li><a href="#">Week 06:</a></li>
-                </ul>
-            </section>
-            <section class="card">
-                <h2>
-                    Information
-                </h2>
-
-                <p>Weather: <span id="weather">Null</span></p>
-                <p>City: <span id="city">Null</span></p>
-                <p>Visits: <span id="visits">Null</span></p>
-            </section>
-        </div>
+        <form id="registrationForm" class="myform" method="get" action="thanks.html">
+            <div>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required pattern="[A-Za-z0-9]{8,}">
+                    <span class="toggle-password" onclick="togglePassword('password', 'togglePasswordIcon1')">
+                        <i id="togglePasswordIcon1" class="eye-icon">👀</i>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <span class="toggle-password" onclick="togglePassword('confirmPassword', 'togglePasswordIcon2')">
+                        <i id="togglePasswordIcon2" class="eye-icon">👀</i>
+                    </span>
+                </div>
+                <span id="passwordError" class="error" style="display:none;">Your Passwords do not match</span>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+\-]+@byui\.edu$" title="Please enter a valid @byui.edu email address">
+            </div>
+            <div>
+                <label for="pageRating">Page Rating</label>
+                <input type="range" id="pageRating" name="pageRating" min="1" max="10" step="1" oninput="updateRating(this.value)">
+                <span id="ratingDisplay">5</span>
+            </div>
+            <button type="submit">Join Now</button>
+        </form>
+            
     </main>
     <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3963.38529963519!2d3.3555556553532857!3d6.598945340021063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sng!4v1715932883553!5m2!1sen!2sng" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     <footer>
@@ -89,6 +102,6 @@
             <span>Nigeria</span>
         </div>
     </footer>
-    <script src="scripts/getDates.js"></script>    
+    <script src="scripts/form.js"></script>    
 </body>
 </html>
