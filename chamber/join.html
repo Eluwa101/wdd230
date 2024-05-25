@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osun State Chamber of Commerce</title>
+    <meta name="description" content="Welcome to the Osun State Chamber of Commerce. Join us to promote local businesses and economic growth.">
+    <link rel="icon" href="favicon.ico">
+    <meta property="og:title" content="Osun State Chamber of Commerce">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.brandcrowd.com/maker/social/0tz09sj0d9">
+    <meta property="og:url" content="https://eluwa101.github.io/wdd230/chamber/index.html">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/larger.css">
+    <link rel="stylesheet" href="styles/base.css">
+
+</head>
+<body>
+    <header>
+        <h1>Welcome to Osun State Chamber of Commerce</h1>
+        <button id="hamburger-btn" aria-label="Toggle navigation">
+            <span id="hamburger-icon">&#9779;</span>
+            <span id="close-icon" style="display: none;">&#10006;</span>
+        </button>
+    </header>
+
+    <nav id="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="discover.html">Discover</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="join.html">Join</a></li>
+        </ul>
+    </nav>
+
+    <main class="join-container">
+        <div class="container">
+            <form method="get" action="thank.html">
+                <label for="first-name">First Name:
+                    <input type="text" placeholder="Aigbe" id="first-name" name="first-name" required>
+                </label>
+                <label for="last-name">Last Name:
+                    <input type="text" placeholder="Percy" id="last-name" name="last-name" required>
+                </label>
+                <label for="title">Title/Position:
+                    <input type="text" id="title" placeholder="Director" name="title" pattern="[A-Za-z\s-]{7,}" title="Only letters, hyphens, and spaces, minimum 7 characters">
+                </label>
+                <label for="email">Email:
+                    <input type="email" id="email" name="email" placeholder="example@example.com" required>
+                </label>
+                <label for="phone">Mobile Phone:
+                    <input type="tel" id="phone" placeholder="123456789" name="phone" required>
+                </label>
+                <label for="organization">Organization Name:
+                    <input type="text" id="organization" name="organization" required>
+                </label>
+                <label for="membership-level">Membership Level:
+                    <select id="membership-level" name="membership-level">
+                        <option value="np">NP Membership</option>
+                        <option value="bronze">Bronze Membership</option>
+                        <option value="silver">Silver Membership</option>
+                        <option value="gold">Gold Membership</option>
+                    </select>
+                </label>
+                <label for="description">Organization Description:
+                    <textarea id="description" name="description"></textarea>
+                </label>
+                <input type="hidden" id="timestamp" name="timestamp">
+                <label for="submit"><input type="submit" value="Join Us"></label>
+            </form>
+            <div class="membership-benefits">
+                <h3>Membership Benefits</h3>
+                <ul>
+                    <li><strong>NP Membership:</strong> No fee, basic benefits.</li>
+                    <li><strong>Bronze Membership:</strong> Includes special events.</li>
+                    <li><strong>Silver Membership:</strong> Includes special events and training.</li>
+                    <li><strong>Gold Membership:</strong> Includes special events, training, advertising, and event discounts.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p>Address: 180 Abere Street, Osun, Nigeria</p>
+            <p>Phone: +1234567890</p>
+            <p>Email: info@osunchamber.com</p>
+        </div>
+        <div class="development-info">
+            <h3>Development Information</h3>
+            <p>Developer: Eluwa Monday</p>
+            <p>Project: WDD 230</p>
+            <p>Last Modified: <span id="last-modified"></span></p>
+        </div>
+        <div class="social-media">
+            <h3>Social Media</h3>
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://twitter.com">Twitter</a>
+            <a href="https://whatsapp.com">WhatsApp</a>
+        </div>
+    </footer>
+
+    <script src="scripts/scripts.js"></script>
+</body>
+</html>

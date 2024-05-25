@@ -43,3 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastModified = document.getElementById('last-modified');
     lastModified.textContent = document.lastModified;
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const timestamp = document.getElementById('timestamp');
+    const now = new Date();
+    timestamp.value = now.toISOString();
+});

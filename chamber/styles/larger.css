@@ -120,3 +120,10 @@
         font-size: 0.9em;
     }
 } */
+
+@media (min-width: 768px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}

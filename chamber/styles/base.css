@@ -237,6 +237,7 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     font-size: small;
+    margin-bottom: 0;
 }
 
 .contact-info,.development-info, .social-media{
@@ -336,4 +337,99 @@ button:hover {
 #sidebar p:hover {
     background-color: #f1f1f1;
     border-color: #ccc;
+}
+
+
+
+/* Join Page */
+
+.join-container {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 20px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+input, select, textarea {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #07395f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+    background-color: #55cbd3;
+    color: #000;
+}
+
+#thank{
+    padding: 10px;
+    background-color: #55cbd3;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#thanksha{
+    padding: 10px;
+    background-color: #07395f;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 auto;
+}
+
+.membership-benefits {
+    margin-top: 20px;
+}
+
+.membership-benefits h3 {
+    margin-bottom: 10px;
+}
+
+.membership-benefits ul {
+    list-style-type: none;
+    padding: 0;
 }
