@@ -44,9 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     lastModified.textContent = document.lastModified;
 });
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const timestamp = document.getElementById('timestamp');
     const now = new Date();

@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #3498db;
+    --primary-color: #133748;
     --secondary-color: #2ecc71;
     --border-color: #ccc;
   }
@@ -47,7 +47,8 @@
   }
   
   button[type="submit"]:hover {
-    background-color: var(--secondary-color);
+    background-color: #66c0cc;
+    color: #000;
   }
   
   #ratingDisplay {
@@ -73,7 +74,7 @@
   }
   
   input:invalid {
-    border-color: red;
+    border-color: #66c0cc;
   }
   
   input:focus {

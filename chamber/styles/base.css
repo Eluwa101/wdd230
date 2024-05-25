@@ -391,6 +391,8 @@ input[type="submit"] {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    max-width: 50%;
+    /* margin: 0 auto; */
 }
 
 input[type="submit"]:hover {
