@@ -1,0 +1,98 @@
+{
+    "weeks": [
+      {
+        "week": "Week 1",
+        "links": [
+          {
+            "url": "week01/holygrail.html",
+            "title": "HG Layout"
+          },
+          {
+            "url": "week01/media-query.html",
+            "title": "MQueries"
+          },
+          {
+            "url": "week01/chamber-site-plan.html",
+            "title": "Site-Plan"
+          }
+        ]
+      },
+      {
+        "week": "Week 2",
+        "links": [
+          {
+            "url": "week02/bom.html",
+            "title": "BoM"
+          },
+          {
+            "url": "week02/design.html",
+            "title": "Design"
+          },
+          {
+            "url": "https://codepen.io/Eluwa-Monday/pen/GRLVREM",
+            "title": "Hamburger"
+          }
+        ]
+      },
+      {
+        "week": "Week 3",
+        "links": [
+          {
+            "url": "week03/lazyload.html",
+            "title": "LazyLoad"
+          },
+          {
+            "url": "week03/bom.html",
+            "title": "BoM-Update"
+          },
+          {
+            "url": "week03/responsive-images.html",
+            "title": "Responsive-Images"
+          }
+        ]
+      },
+      {
+        "week": "Week 4",
+        "links": [
+          {
+            "url": "https://codepen.io/Eluwa-Monday/pen/ExzyKdB",
+            "title": "Class"
+          },
+          {
+            "url": "week04/combinator.html",
+            "title": "Combinator"
+          },
+          {
+            "url": "week04/tablebuild.html",
+            "title": "Table"
+          },
+          {
+            "url": "Form-start/index.html",
+            "title": "Forms"
+          }
+        ]
+      },
+      {
+        "week": "Week 5",
+        "links": [
+          {
+            "url": "https://codepen.io/Eluwa-Monday/pen/JjqRpyw",
+            "title": "Selectors"
+          },
+          {
+            "url": "week05/scripts/new-ward-members.json",
+            "title": "Ward Members"
+          },
+          {
+            "url": "week05/prophets.html",
+            "title": "Latter-day Prophets"
+          },
+          {
+            "url": "week05/weather.html",
+            "title": "Weather API"
+          }
+        ]
+      }
+    ]
+  }
+  
