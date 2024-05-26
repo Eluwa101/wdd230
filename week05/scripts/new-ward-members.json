@@ -1,0 +1,78 @@
+{
+    "families": [
+        {
+            "familyName": "Adejumo",
+            "moveInDate": "2024-05-15",
+            "numberOfPeople": 3,
+            "visitedByBishopric": true,
+            "members": [
+                {
+                    "name": "John Adejumo",
+                    "gender": "Male",
+                    "birthdate": "1980-01-10"
+                },
+                {
+                    "name": "Emma Adejumo",
+                    "gender": "Female",
+                    "birthdate": "1982-05-20"
+                },
+                {
+                    "name": "Seun Adejumo",
+                    "gender": "Male",
+                    "birthdate": "2010-07-15"
+                }
+            ]
+        },
+        {
+            "familyName": "Adegbite",
+            "moveInDate": "2022-08-25",
+            "numberOfPeople": 2,
+            "visitedByBishopric": false,
+            "members": [
+                {
+                    "name": "Michael Adegbite",
+                    "gender": "Male",
+                    "birthdate": "1975-03-10"
+                },
+                {
+                    "name": "Sarah Adegbite",
+                    "gender": "Female",
+                    "birthdate": "1978-09-25"
+                }
+            ]
+        },
+        {
+            "familyName": "Amos",
+            "moveInDate": "2021-11-02",
+            "numberOfPeople": 5,
+            "visitedByBishopric": true,
+            "members": [
+                {
+                    "name": "David Amos",
+                    "gender": "Male",
+                    "birthdate": "1985-02-14"
+                },
+                {
+                    "name": "Ayo Amos",
+                    "gender": "Female",
+                    "birthdate": "1987-12-05"
+                },
+                {
+                    "name": "Destiny Amos",
+                    "gender": "Male",
+                    "birthdate": "2012-04-18"
+                },
+                {
+                    "name": "Eva Amos",
+                    "gender": "Female",
+                    "birthdate": "2014-09-23"
+                },
+                {
+                    "name": "Alma Amos",
+                    "gender": "Female",
+                    "birthdate": "2016-11-30"
+                }
+            ]
+        }
+    ]
+}
