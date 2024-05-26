@@ -64,7 +64,7 @@ const tempElement = document.querySelector('#temp');
 const weatherIcon = document.querySelector('#weather-icon');
 const captionDesc = document.querySelector('figcaption');
 
-// OpenWeatherMap API URL with coordinates (7.78, 4.55)
+// can change the city when moving to new loaction
 const apiKey = '5f00e39a78a9a5377b98ed1479277065';
 const lat = 7.78;
 const lon = 4.55;
@@ -75,7 +75,7 @@ async function apiFetch() {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
-            console.log(data); // For testing
+            console.log(data);
             displayResults(data);
         } else {
             throw new Error(await response.text());
