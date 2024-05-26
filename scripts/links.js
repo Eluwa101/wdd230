@@ -35,7 +35,7 @@ function displayLinks(weeks) {
       activityLink.textContent = linkObj.title;
       
       weekItem.appendChild(activityLink);
-      weekItem.appendChild(document.createTextNode('|'));
+      weekItem.appendChild(document.createTextNode(' | '));
     });
     weekItem.removeChild(weekItem.lastChild); // Remove last pipe character
     navigation.appendChild(weekItem);
