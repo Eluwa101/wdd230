@@ -1,6 +1,6 @@
 // Define baseURL and linksURL variables
 const baseURL = 'https://eluwa101.github.io/wdd230/';
-const linksURL = 'https://eluwa101.github.io/wdd230/scripts/links.json';
+const linksURL = 'https://eluwa101.github.io/wdd230/data/links.json';
 
 async function getLinks() {
   try {
