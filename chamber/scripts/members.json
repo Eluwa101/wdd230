@@ -1,0 +1,65 @@
+[
+    {
+        "name": "Coca-Cola",
+        "address": "Ememe St, Portharcourt, Rivers, 675439",
+        "phone": "(234) 456-7890",
+        "website": "https://www.coca-cola.com",
+        "image": "coca-cola.webp",
+        "membershipLevel": "Gold",
+        "description": "Leading provider of Soft Drinks."
+    },
+    {
+        "name": "Pepsi",
+        "address": "Jagun St, Agidingbi, lagos, 254367",
+        "phone": "(987) 654-3210",
+        "website": "https://www.pepsi.com",
+        "image": "pepsi.webp",
+        "membershipLevel": "Silver",
+        "description": "Innovative solutions for Soft drinks. Official sponsor of many sports events Sponsor."
+    },
+    {
+        "name": "Ergas Basher Technologies Inc",
+        "address": "789 Pine St, Aba, Abia, 230110",
+        "phone": "(+234)9134846401",
+        "website": "https://eluwa101.github.io/wdd130/ergasbasher-portfolio/index.html",
+        "image": "ergasbasher.webp",
+        "membershipLevel": "Bronze",
+        "description": "Committed to customer satisfaction. And Providing Innovative Tech solutions"
+    },
+    {
+        "name": "Apple",
+        "address": "101 Maple St, Tun Razak, Kuala Lumpur, 55188",
+        "phone": "(111) 222-3333",
+        "website": "https://www.apple.com",
+        "image": "apple.webp",
+        "membershipLevel": "Gold",
+        "description": "Excellence in every project. Also providing Innovation information"
+    },
+    {
+        "name": "Microsoft",
+        "address": "202 Birch St, City, State, ZIP",
+        "phone": "(444) 555-6666",
+        "website": "https://www.microsoft.com",
+        "image": "microsoft.webp",
+        "membershipLevel": "Gold",
+        "description": "Your trusted partner in business. Provides Your Computers Operating System"
+    },
+    {
+        "name": "Nador Inc.",
+        "address": "19 Mary Queen and Mother, Osogbo, Osun, 230110",
+        "phone": "(777) 888-9999",
+        "website": "https://www.Google.com",
+        "image": "nador.webp",
+        "membershipLevel": "Silver",
+        "description": "Delivering solutions that matter."
+    },
+    {
+        "name": "Google",
+        "address": "21 Lugard Avenue, Ikoyi, Lagos, 101233",
+        "phone": "(000) 123-4567",
+        "website": "https://www.Google.com",
+        "image": "google.webp",
+        "membershipLevel": "Gold",
+        "description": "Our mission is to organize the world’s information and make it universally accessible and useful."
+    }
+]

@@ -1,7 +1,10 @@
 /* main CSS styles */
+*{
+    font-family: 'Courier New', Courier, monospace;
 
+}
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
@@ -141,66 +144,20 @@ main {
     margin-bottom: 10px;
 }
 
-.event a {
+.event a, .spotlight a {
     display: block;
     background-color: #07395f; 
     color: #fff;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
+    margin: 0 auto;
     border-radius: 5px;
     width: 90px;
     transition: background-color 0.3s ease; 
 }
 
 
-
-.event a:hover {
-    background-color: #C56E3E;
-    color: #000;
-}
-
-#spotlights_card {
-    padding: 40px 20px;
-    background-color: #f9f9f9;
-}
-
-#spotlights_card h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #07395f;
-}
-
-.spotlight {
-    display: flex;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-    /* padding: 20px; */
-    transition: box-shadow 0.3s ease;
-}
-
-.spotlight:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.spotlight img {
-    max-width: 150px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.spotlight p {
-    color: #333333;
-    font-size: 16px;
-    line-height: 1.6;
-    /* margin-left: 10 px; */
-    padding-left: 20px;
-    overflow: hidden;
-    width: 50%;
-}
 
 .weather-info p{
     text-align: center;
@@ -301,7 +258,7 @@ body {
     color: #333;
 }
 
-button {
+button{
     padding: 10px 15px;
     background-color: #0e5f76;
     border: none;
@@ -434,4 +391,147 @@ input[type="submit"]:hover {
 .membership-benefits ul {
     list-style-type: none;
     padding: 0;
+}
+
+
+/* directory */
+
+#directory * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#directory {
+    margin: 0 auto;
+    padding: 0.5rem;
+    max-width: 700px;
+    background-color: #fff;
+}
+
+#directory .menu {
+    margin: 1rem auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    background-color: #1b6192;
+    text-align: center;
+}
+
+#directory .menu button {
+    padding: 1rem;
+    font-weight: 700;
+    
+}
+
+#directory section {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    background-color: #eee;
+}
+
+#directory .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 5px;
+    align-items: center;
+}
+
+#directory .grid section {
+    text-align: center;
+}
+
+#directory .grid img {
+    border: 1px solid #fff;
+    box-shadow: 0 0 10px #333;
+}
+
+#directory .grid section > * {
+    margin: 0.1rem;
+}
+
+#directory .list {
+    display: flex;
+    flex-direction: column;
+}
+
+#directory .list section {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    margin: 0;
+    padding: 0.25rem;
+}
+
+#directory .list section > * {
+    margin: 0 1rem;
+}
+
+#directory .list section img {
+    display: none;
+}
+
+.list section h3 {
+    font-size: 1rem;
+}
+
+.list section:nth-child(even) {
+    background-color: #55cbd3;
+}
+
+section h3 {
+    font-size: 1.5rem;
+}
+
+section p {
+    font-weight: 600;
+    font-size: smaller;
+}
+
+#directory section a {
+    font-size: 0.85rem;
+    color: rgb(58, 99, 113);
+    letter-spacing: 1.1pt;
+}
+
+#directory img {
+    height: 75px;
+    max-width: 100%;
+}
+
+
+/* home */
+
+#responsive-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+#responsive-section section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#responsive-section section img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#responsive-section section h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+#responsive-section section p {
+    font-size: 1rem;
+    line-height: 1.5;
 }
