@@ -82,10 +82,49 @@ document.addEventListener("DOMContentLoaded", () => {
                     <h3>${member.name}</h3>
                     <p>${member.address}</p>
                     <p>${member.phone}</p>
-                    <a href="${member.website}" target="_blank">Their Website</a>
+                    <a href="${member.website}" target="_blank">The Website</a>
                     <p>Membership Level: ${member.membershipLevel}</p>
                 `;
                 display.appendChild(section);
             });
         });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const banner = document.getElementById('banner');
+    const advertSpotlight = document.getElementById('advert-spotlight');
+    const today = new Date().getDay();
+    console.log(today);
+
+    if (today < 1 || today > 3) {
+        banner.style.display = 'none';
+    }
+
+    // Function to close the banner
+    window.closeBanner = () => {
+        banner.style.display = 'none';
+    };
+
+    fetch('scripts/members.json')
+        .then(response => response.json())
+        .then(data => {
+            const eligibleMembers = data.filter(member => ['Silver', 'Gold'].includes(member.membershipLevel));
+            const shuffledMembers = eligibleMembers.sort(() => 0.5 - Math.random());
+            const selectedMembers = shuffledMembers.slice(0, 3);
+
+            selectedMembers.forEach(member => {
+                const section = document.createElement('section');
+                section.innerHTML = `
+                    <img src="images/${member.image}" alt="${member.name}">
+                    <h3>${member.name}</h3>
+                    <p>${member.address}</p>
+                    <p>${member.phone}</p>
+                    <a href="${member.website}" target="_blank">The Website</a>
+                    <p>Membership Level: ${member.membershipLevel}</p>
+                `;
+                advertSpotlight.appendChild(section);
+            });
+        })
+        .catch(error => console.error('Error fetching member data:', error));
 });

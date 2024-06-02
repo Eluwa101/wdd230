@@ -535,3 +535,47 @@ section p {
     font-size: 1rem;
     line-height: 1.5;
 }
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.banner {
+    background-color: #ffcc00;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+.banner #close {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.advert-spotlight {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.advert-spotlight section {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    text-align: center;
+}
+
+.advert-spotlight img {
+    max-width: 100%;
+    height: auto;
+}
