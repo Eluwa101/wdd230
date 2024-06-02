@@ -16,6 +16,7 @@
         display: flex; 
         justify-content: center;
     }
+    
 
     nav .active {
         background-color: rgba(14, 13, 13, 0);
