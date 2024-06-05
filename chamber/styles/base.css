@@ -545,6 +545,20 @@ section p {
     line-height: 1.5;
 }
 
+#forecast {
+    margin-top: 1rem;
+}
+
+.forecast-day {
+    display: inline-block;
+    text-align: center;
+    margin: 0.5rem;
+}
+
+.forecast-day img {
+    width: 50px;
+    height: 50px;
+}
 
 
 body {
