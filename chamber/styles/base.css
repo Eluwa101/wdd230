@@ -525,7 +525,7 @@ section p {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
 }
 
 #responsive-section section img {
@@ -555,7 +555,7 @@ body {
 }
 
 .banner {
-    background-color: #ffcc00;
+    background-color: #55cbd3;
     padding: 1rem;
     text-align: center;
     position: relative;
@@ -576,14 +576,22 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     padding: 1rem;
+
 }
 
 .advert-spotlight section {
     border: 1px solid #ccc;
     padding: 1rem;
     text-align: center;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.7);
 }
 
+.advert-spotlight img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
 .advert-spotlight img {
     max-width: 100%;
     height: auto;
