@@ -113,6 +113,10 @@
         max-height: 25em;
         text-align: center;
     }
+
+    .photos img {
+        transition: none !important;
+    }
 }
 
 /* @media (max-width: 600px) {
@@ -144,4 +148,4 @@
         flex-direction: column;
         margin-bottom: 50px;
     }
-}  
+}
