@@ -90,17 +90,14 @@ nav ul {
 nav ul li {
     display: inline-block;
     margin: 10px 10px;
+    padding: 5px 5px;
 }
 
-nav ul li a:hover {
-    color: #ffffff;
-    background-color: #e6ecf1;
-}
 nav ul li a:active{
-    color: #f5dbdb;
+    color: #1d1e1f;
 }
 nav ul li a:visited{
-    color: #f5dbdb;
+    color: #0f283a;
 }
 
 nav ul li a {
@@ -111,6 +108,10 @@ nav ul li a {
     text-decoration: none;
 }
 
+nav ul li a:hover {
+    color: #ffffff;
+
+}
 main {
     padding: 20px;
 }
