@@ -62,12 +62,12 @@
                 <h2> Learning Activities</h2>
                 <button id="menu" aria-label="Toggle Menu"></button>
                 <ul class="navigation" id="link-list">
-
+                
                 </ul>
             </section>
             <section class="card">
                 <h2>
-                    Information
+                    Weather Information
                 </h2>
                 <p><span id="city">Null</span></p>
                 <p><span id="weather">Null</span> | The Temperature is <span id="temp"></span></p>
@@ -77,11 +77,44 @@
                   </figure>
                 <p>Visits: <span id="visits">Null</span></p>
             </section>
+            <section class="card">
+                <h2>
+                    Other Projects
+                </h2>
+                <iframe src="https://eluwa101.github.io/wdd130/wwr/index.html" display="flex" justify-content="center" width="600px" height="450px" margin="0 auto" style="border:none;">
+                </iframe>
+            </section>
+            <section class="card">
+                <h2>
+                    Project Ideas
+                </h2>
+                <form
+                action="https://formspree.io/f/xanwjlnd"
+                method="POST"
+              >
+                <label>
+                  Your email:
+                  <input type="email" name="email">
+                </label>
+                <label>
+                  Your message:
+                  <textarea name="message"></textarea>
+                </label>
+                <!-- your other form fields go here -->
+                <button type="submit">Send</button>
+              </form>
+            </section>
         </div>
     </main>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14309.400061426692!2d4.5462113161207585!3d7.779173315707112!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sng!4v1716758608713!5m2!1sen!2sng" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <section class="card">
+        <h2>Google Map Project</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14309.400061426692!2d4.5462113161207585!3d7.779173315707112!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sng!4v1716758608713!5m2!1sen!2sng" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
 
-    <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Africa%2FLagos&bgcolor=%23ffffff&title=Elders%20Quorum%20Birthday&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%233F51B5" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    <section class="card">
+        <h2>Elders Quorum Calendar Project</h2>
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Africa%2FLagos&bgcolor=%23ffffff&title=Elders%20Quorum%20Birthday&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%233F51B5" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </section>
     <footer>
         <div class="footer-content">
             <p>&copy; <span id="year"></span> Eluwa Monday</p>
