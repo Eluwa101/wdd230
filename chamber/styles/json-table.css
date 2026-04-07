@@ -41,6 +41,24 @@
     margin-top: 8px;
 }
 
+.token-toggle {
+    align-self: flex-start;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid #1b6192;
+    background-color: #f4f9fb;
+    color: #07395f;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.token-status {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    color: #1b6192;
+}
+
 .file-label input[type="file"] {
     margin-top: 8px;
     padding: 8px;

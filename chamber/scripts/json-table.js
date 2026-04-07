@@ -2,6 +2,8 @@ const fileInput = document.getElementById('json-file');
 const textInput = document.getElementById('json-input');
 const endpointInput = document.getElementById('api-endpoint');
 const tokenInput = document.getElementById('api-token');
+const toggleTokenButton = document.getElementById('toggle-token');
+const tokenStatus = document.getElementById('token-status');
 const fetchButton = document.getElementById('fetch-btn');
 const parseButton = document.getElementById('parse-btn');
 const clearButton = document.getElementById('clear-btn');
@@ -27,6 +29,25 @@ const setStatus = (message, isError = false) => {
 const setFetchState = (isLoading) => {
     fetchButton.disabled = isLoading;
     fetchButton.textContent = isLoading ? 'Fetching...' : 'Fetch JSON';
+};
+
+const updateTokenStatus = () => {
+    const manualToken = tokenInput.value.trim();
+    if (manualToken) {
+        tokenStatus.textContent = 'Token status: Manual token provided.';
+        tokenStatus.style.color = '#1b6192';
+        return;
+    }
+
+    const storedToken = localStorage.getItem('AuthTokenKey');
+    if (storedToken && storedToken.trim()) {
+        tokenStatus.textContent = 'Token status: Using AuthTokenKey from localStorage.';
+        tokenStatus.style.color = '#1b6192';
+        return;
+    }
+
+    tokenStatus.textContent = 'Token status: No token found. Log in or paste one above.';
+    tokenStatus.style.color = '#a32121';
 };
 
 const resetTableState = () => {
@@ -96,6 +117,34 @@ const flattenRow = (row) => {
     return output;
 };
 
+const findFirstArray = (payload) => {
+    const queue = [payload];
+    const seen = new Set();
+
+    while (queue.length) {
+        const current = queue.shift();
+        if (!current || typeof current !== 'object') {
+            continue;
+        }
+        if (seen.has(current)) {
+            continue;
+        }
+        seen.add(current);
+
+        if (Array.isArray(current)) {
+            return current;
+        }
+
+        Object.values(current).forEach((value) => {
+            if (value && typeof value === 'object') {
+                queue.push(value);
+            }
+        });
+    }
+
+    return null;
+};
+
 const normalizeJson = (payload) => {
     if (Array.isArray(payload)) {
         return payload;
@@ -110,6 +159,10 @@ const normalizeJson = (payload) => {
         }
         if (Array.isArray(payload.results)) {
             return payload.results;
+        }
+        const nestedArray = findFirstArray(payload);
+        if (nestedArray) {
+            return nestedArray;
         }
         return [payload];
     }
@@ -139,7 +192,15 @@ const buildColumns = (rows) => {
     return columns;
 };
 
+const arrayRowToObject = (row) => row.reduce((acc, value, index) => {
+    acc[`col_${index + 1}`] = value;
+    return acc;
+}, {});
+
 const normalizeRows = (rows) => rows.map((row) => {
+    if (Array.isArray(row)) {
+        return flattenRow(arrayRowToObject(row));
+    }
     if (isPlainObject(row)) {
         return flattenRow(row);
     }
@@ -223,6 +284,36 @@ const getAuthToken = () => {
     return storedToken && storedToken.trim() ? storedToken.trim() : null;
 };
 
+const normalizeToken = (token) => {
+    if (!token) {
+        return null;
+    }
+
+    const trimmed = token.trim();
+    if (!trimmed) {
+        return null;
+    }
+
+    if (trimmed.toLowerCase().startsWith('authtokenkey=')) {
+        return trimmed.slice('authtokenkey='.length).trim();
+    }
+
+    return trimmed;
+};
+
+const buildAuthHeader = (token) => {
+    const normalized = normalizeToken(token);
+    if (!normalized) {
+        return null;
+    }
+
+    if (/^bearer\s+/i.test(normalized)) {
+        return normalized;
+    }
+
+    return `Bearer ${normalized}`;
+};
+
 const fetchJsonFromEndpoint = async () => {
     const endpoint = endpointInput.value.trim();
 
@@ -232,8 +323,10 @@ const fetchJsonFromEndpoint = async () => {
     }
 
     const token = getAuthToken();
-    if (!token) {
+    const authHeader = buildAuthHeader(token);
+    if (!authHeader) {
         setStatus('Add a token above or log in to pathsay.fhtl.org so AuthTokenKey is in localStorage.', true);
+        updateTokenStatus();
         return;
     }
 
@@ -244,7 +337,7 @@ const fetchJsonFromEndpoint = async () => {
         const response = await fetch(endpoint, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: authHeader
             }
         });
 
@@ -254,19 +347,22 @@ const fetchJsonFromEndpoint = async () => {
             throw new Error(`Request failed with ${response.status} ${response.statusText}${detail}`);
         }
 
-        const contentType = response.headers.get('content-type') || '';
-        if (!contentType.includes('application/json')) {
-            const rawText = await response.text();
-            throw new Error(`Expected JSON but received: ${rawText.slice(0, 200)}`);
+        const rawText = await response.text();
+        let data;
+        try {
+            data = rawText ? JSON.parse(rawText) : null;
+        } catch (parseError) {
+            const contentType = response.headers.get('content-type') || '';
+            throw new Error(`Expected JSON but received ${contentType || 'unknown content type'}: ${rawText.slice(0, 200)}`);
         }
-
-        const data = await response.json();
         textInput.value = JSON.stringify(data, null, 2);
         parseAndRender(textInput.value);
         setStatus('API data loaded. Table updated.');
+        updateTokenStatus();
     } catch (error) {
         resetTableState();
         setStatus(`API error: ${error.message}`, true);
+        updateTokenStatus();
     } finally {
         setFetchState(false);
     }
@@ -372,6 +468,13 @@ clearButton.addEventListener('click', () => {
 
 copyButton.addEventListener('click', copyTable);
 downloadButton.addEventListener('click', downloadCsv);
+toggleTokenButton.addEventListener('click', () => {
+    const isHidden = tokenInput.type === 'password';
+    tokenInput.type = isHidden ? 'text' : 'password';
+    toggleTokenButton.textContent = isHidden ? 'Hide Token' : 'Show Token';
+});
+tokenInput.addEventListener('input', updateTokenStatus);
 
 resetTableState();
 setFetchState(false);
+updateTokenStatus();
