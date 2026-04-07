@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const hamburgerIcon = document.getElementById('hamburger-icon');
     const closeIcon = document.getElementById('close-icon');
 
+    if (!hamburgerBtn || !mainNav || !hamburgerIcon || !closeIcon) {
+        return;
+    }
+
     hamburgerBtn.addEventListener('click', function () {
         mainNav.classList.toggle('active');
         hamburgerIcon.style.display = hamburgerIcon.style.display === 'none' ? 'inline-block' : 'none';
@@ -13,8 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // JavaScript code for getting the last modified date of the page
-const lastModified = document.lastModified;
-document.getElementById('last-modified').textContent = lastModified;
+const lastModifiedElement = document.getElementById('last-modified');
+if (lastModifiedElement) {
+    lastModifiedElement.textContent = document.lastModified;
+}
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastVisit = localStorage.getItem('lastVisit');
     const currentVisit = new Date();
     
+    if (!visitMessage) {
+        return;
+    }
+
     if (!lastVisit) {
         visitMessage.textContent = "Welcome! Let us know if you have any questions.";
     } else {
@@ -41,13 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('lastVisit', currentVisit);
     
     const lastModified = document.getElementById('last-modified');
-    lastModified.textContent = document.lastModified;
+    if (lastModified) {
+        lastModified.textContent = document.lastModified;
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     const timestamp = document.getElementById('timestamp');
     const now = new Date();
-    timestamp.value = now.toISOString();
+    if (timestamp) {
+        timestamp.value = now.toISOString();
+    }
 });
 
 
@@ -59,6 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const gridButton = document.querySelector("#grid");
     const listButton = document.querySelector("#list");
     const display = document.querySelector("article");
+
+    if (!gridButton || !listButton || !display) {
+        return;
+    }
 
     gridButton.addEventListener("click", () => {
         display.classList.add("grid");
@@ -96,6 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const advertSpotlight = document.getElementById('advert-spotlight');
     const today = new Date().getDay();
     console.log(today);
+
+    if (!banner || !advertSpotlight) {
+        return;
+    }
 
     if (today < 1 || today > 3) {
         banner.style.display = 'none';
@@ -138,6 +160,7 @@ const tempElement = document.querySelector('#temp');
 const weatherIcon = document.querySelector('#weather-icon');
 const captionDesc = document.querySelector('figcaption');
 const forecastContainer = document.querySelector('#forecast-container');
+const weatherReady = cityElement && weatherElement && tempElement && weatherIcon && captionDesc && forecastContainer;
 
 // API details
 const apiKey = '5f00e39a78a9a5377b98ed1479277065';
@@ -209,5 +232,7 @@ function displayForecast(forecastData) {
     }
 }
 
-apiFetch();
+if (weatherReady) {
+    apiFetch();
+}
 

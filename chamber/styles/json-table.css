@@ -1,0 +1,111 @@
+.json-page {
+    display: grid;
+    gap: 24px;
+    padding: 20px;
+}
+
+.json-intro {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.json-inputs,
+.json-output {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.json-inputs label {
+    display: block;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.json-inputs textarea {
+    width: 100%;
+    min-height: 220px;
+    resize: vertical;
+}
+
+.file-label input[type="file"] {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #f4f4f4;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.button-row button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.counts {
+    font-size: 0.95rem;
+    color: #1b6192;
+}
+
+.table-container {
+    overflow: auto;
+    max-height: 420px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.table-container thead th {
+    position: sticky;
+    top: 0;
+    background-color: #07395f;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #1b6192;
+}
+
+.table-container tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.table-container tbody tr:nth-child(even) {
+    background-color: #f4f9fb;
+}
+
+@media (min-width: 900px) {
+    .json-page {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .json-intro {
+        grid-column: 1 / -1;
+    }
+
+    .json-output {
+        min-height: 400px;
+    }
+}

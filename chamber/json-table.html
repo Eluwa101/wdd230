@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to Table | Osun State Chamber of Commerce</title>
+    <meta name="description" content="Convert raw JSON files or pasted JSON into a copyable, downloadable table.">
+    <meta name="author" content="Eluwa Monday">
+    <link rel="icon" href="favicon.ico">
+    <meta property="og:title" content="JSON to Table | Osun State Chamber of Commerce">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.brandcrowd.com/maker/social/0tz09sj0d9">
+    <meta property="og:url" content="https://eluwa101.github.io/wdd230/chamber/json-table.html">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/larger.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/json-table.css">
+</head>
+<body>
+    <header>
+        <h1>JSON to Table Converter</h1>
+        <button id="hamburger-btn" aria-label="Toggle navigation">
+            <span id="hamburger-icon">&#9776;</span>
+            <span id="close-icon" style="display: none;">&#10006;</span>
+        </button>
+    </header>
+
+    <nav id="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="discover.html">Discover</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="json-table.html">JSON to Table</a></li>
+            <li><a href="join.html">Join</a></li>
+        </ul>
+    </nav>
+
+    <main class="json-page">
+        <section class="json-intro">
+            <h2>Turn Raw JSON into a Table</h2>
+            <p>Upload a JSON file or paste JSON data below. We will build a table you can copy or download as CSV.</p>
+        </section>
+
+        <section class="json-inputs">
+            <label class="file-label" for="json-file">
+                Upload JSON File
+                <input id="json-file" type="file" accept=".json,application/json">
+            </label>
+
+            <label for="json-input">
+                Paste JSON
+                <textarea id="json-input" rows="12" placeholder='Example: [{"name":"Ada","role":"Founder"},{"name":"Kola","role":"Treasurer"}]'></textarea>
+            </label>
+
+            <div class="button-row">
+                <button id="parse-btn" type="button">Generate Table</button>
+                <button id="clear-btn" type="button">Clear</button>
+                <button id="copy-btn" type="button" disabled>Copy Table</button>
+                <button id="download-btn" type="button" disabled>Download CSV</button>
+            </div>
+        </section>
+
+        <section class="json-output">
+            <div class="status-row">
+                <p id="status">Waiting for JSON input.</p>
+                <p class="counts">Rows: <span id="row-count">0</span> | Columns: <span id="column-count">0</span></p>
+            </div>
+            <div id="table-container" class="table-container" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p>Address: 180 Abere Street, Osun, Nigeria</p>
+            <p>Phone: +1234567890</p>
+            <p>Email: info@osunchamber.com</p>
+        </div>
+        <div class="development-info">
+            <h3>Development Information</h3>
+            <p>Developer: Eluwa Monday</p>
+            <p>Project: WDD 230</p>
+            <p>Last Modified: <span id="last-modified"></span></p>
+        </div>
+        <div class="social-media">
+            <h3>Social Media </h3>
+            <a href="facebook.com">facebook</a>
+            <a href="Twitter.com">Twitter</a>
+            <a href="whatsapp.com">Whatsapp</a>
+        </div>
+    </footer>
+
+    <script src="scripts/scripts.js"></script>
+    <script src="scripts/json-table.js"></script>
+</body>
+</html>
