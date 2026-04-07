@@ -1,5 +1,7 @@
 const fileInput = document.getElementById('json-file');
 const textInput = document.getElementById('json-input');
+const endpointInput = document.getElementById('api-endpoint');
+const fetchButton = document.getElementById('fetch-btn');
 const parseButton = document.getElementById('parse-btn');
 const clearButton = document.getElementById('clear-btn');
 const copyButton = document.getElementById('copy-btn');
@@ -19,6 +21,11 @@ let autoParseTimer = null;
 const setStatus = (message, isError = false) => {
     statusText.textContent = message;
     statusText.style.color = isError ? '#a32121' : '#1b6192';
+};
+
+const setFetchState = (isLoading) => {
+    fetchButton.disabled = isLoading;
+    fetchButton.textContent = isLoading ? 'Fetching...' : 'Fetch JSON';
 };
 
 const resetTableState = () => {
@@ -205,6 +212,60 @@ const parseAndRender = (text) => {
     }
 };
 
+const getAuthToken = () => {
+    const token = localStorage.getItem('AuthTokenKey');
+    return token && token.trim() ? token.trim() : null;
+};
+
+const fetchJsonFromEndpoint = async () => {
+    const endpoint = endpointInput.value.trim();
+
+    if (!endpoint) {
+        setStatus('Paste the full API endpoint URL first.', true);
+        return;
+    }
+
+    const token = getAuthToken();
+    if (!token) {
+        setStatus('No AuthTokenKey found in localStorage. Log in to pathsay.fhtl.org first.', true);
+        return;
+    }
+
+    setFetchState(true);
+    setStatus('Fetching data from the API...');
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            const detail = errorBody ? ` - ${errorBody}` : '';
+            throw new Error(`Request failed with ${response.status} ${response.statusText}${detail}`);
+        }
+
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+            const rawText = await response.text();
+            throw new Error(`Expected JSON but received: ${rawText.slice(0, 200)}`);
+        }
+
+        const data = await response.json();
+        textInput.value = JSON.stringify(data, null, 2);
+        parseAndRender(textInput.value);
+        setStatus('API data loaded. Table updated.');
+    } catch (error) {
+        resetTableState();
+        setStatus(`API error: ${error.message}`, true);
+    } finally {
+        setFetchState(false);
+    }
+};
+
 const toCsvValue = (value) => {
     const stringValue = safeStringify(value);
     if (stringValue.includes('"') || stringValue.includes(',') || stringValue.includes('\n')) {
@@ -279,6 +340,13 @@ fileInput.addEventListener('change', (event) => {
 });
 
 parseButton.addEventListener('click', () => parseAndRender(textInput.value));
+fetchButton.addEventListener('click', fetchJsonFromEndpoint);
+endpointInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        fetchJsonFromEndpoint();
+    }
+});
 
 textInput.addEventListener('input', () => {
     if (autoParseTimer) {
@@ -300,3 +368,4 @@ copyButton.addEventListener('click', copyTable);
 downloadButton.addEventListener('click', downloadCsv);
 
 resetTableState();
+setFetchState(false);

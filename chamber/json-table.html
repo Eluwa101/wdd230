@@ -42,6 +42,11 @@
         </section>
 
         <section class="json-inputs">
+            <label for="api-endpoint">
+                Fetch from API (paste full endpoint)
+                <input id="api-endpoint" type="url" placeholder="https://pathsay-backend.fhtl.org/get-weekly-activity-report?weekStartDate=1774764000000">
+            </label>
+
             <label class="file-label" for="json-file">
                 Upload JSON File
                 <input id="json-file" type="file" accept=".json,application/json">
@@ -53,6 +58,7 @@
             </label>
 
             <div class="button-row">
+                <button id="fetch-btn" type="button">Fetch JSON</button>
                 <button id="parse-btn" type="button">Generate Table</button>
                 <button id="clear-btn" type="button">Clear</button>
                 <button id="copy-btn" type="button" disabled>Copy Table</button>
