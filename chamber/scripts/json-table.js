@@ -1,6 +1,7 @@
 const fileInput = document.getElementById('json-file');
 const textInput = document.getElementById('json-input');
 const endpointInput = document.getElementById('api-endpoint');
+const tokenInput = document.getElementById('api-token');
 const fetchButton = document.getElementById('fetch-btn');
 const parseButton = document.getElementById('parse-btn');
 const clearButton = document.getElementById('clear-btn');
@@ -213,8 +214,13 @@ const parseAndRender = (text) => {
 };
 
 const getAuthToken = () => {
-    const token = localStorage.getItem('AuthTokenKey');
-    return token && token.trim() ? token.trim() : null;
+    const manualToken = tokenInput.value.trim();
+    if (manualToken) {
+        return manualToken;
+    }
+
+    const storedToken = localStorage.getItem('AuthTokenKey');
+    return storedToken && storedToken.trim() ? storedToken.trim() : null;
 };
 
 const fetchJsonFromEndpoint = async () => {
@@ -227,7 +233,7 @@ const fetchJsonFromEndpoint = async () => {
 
     const token = getAuthToken();
     if (!token) {
-        setStatus('No AuthTokenKey found in localStorage. Log in to pathsay.fhtl.org first.', true);
+        setStatus('Add a token above or log in to pathsay.fhtl.org so AuthTokenKey is in localStorage.', true);
         return;
     }
 

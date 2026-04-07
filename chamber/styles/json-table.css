@@ -32,7 +32,8 @@
     resize: vertical;
 }
 
-.json-inputs input[type="url"] {
+.json-inputs input[type="url"],
+.json-inputs input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #cfcfcf;
