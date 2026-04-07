@@ -77,6 +77,26 @@ const safeStringify = (value) => {
 
 const isPlainObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
 
+const reportFields = [
+    'userID',
+    'email',
+    'userActive',
+    'language',
+    'status',
+    'weeklyComment',
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'total',
+    'id'
+];
+
+const hasReportFields = (row) => isPlainObject(row) && reportFields.some((field) => Object.prototype.hasOwnProperty.call(row, field));
+
 const flattenValue = (value, prefix, output) => {
     if (Array.isArray(value)) {
         if (value.length === 0) {
@@ -116,7 +136,7 @@ const flattenRow = (row) => {
     return output;
 };
 
-const findFirstArray = (payload) => {
+const findArrayByPredicate = (payload, predicate) => {
     const queue = [payload];
     const seen = new Set();
     let fallbackArray = null;
@@ -132,8 +152,7 @@ const findFirstArray = (payload) => {
         seen.add(current);
 
         if (Array.isArray(current)) {
-            const allObjects = current.length > 0 && current.every((item) => isPlainObject(item));
-            if (allObjects) {
+            if (predicate(current)) {
                 return current;
             }
             if (!fallbackArray) {
@@ -151,7 +170,18 @@ const findFirstArray = (payload) => {
     return fallbackArray;
 };
 
+const findFirstArray = (payload) => findArrayByPredicate(
+    payload,
+    (array) => array.length > 0 && array.every((item) => isPlainObject(item))
+);
+};
+
 const normalizeJson = (payload) => {
+    const reportArray = findArrayByPredicate(payload, (array) => array.some(hasReportFields));
+    if (reportArray) {
+        return reportArray;
+    }
+
     if (Array.isArray(payload)) {
         return payload;
     }
@@ -183,6 +213,10 @@ const normalizeJson = (payload) => {
 };
 
 const buildColumns = (rows) => {
+    if (rows.some(hasReportFields)) {
+        return reportFields;
+    }
+
     const columns = [];
     const seen = new Set();
 
@@ -209,11 +243,25 @@ const arrayRowToObject = (row) => row.reduce((acc, value, index) => {
     return acc;
 }, {});
 
-const normalizeRows = (rows) => rows.map((row) => {
+const isReportColumns = (columns) => columns.length === reportFields.length
+    && columns.every((column, index) => column === reportFields[index]);
+
+const mapRowToColumns = (row, columns) => {
+    const output = {};
+    columns.forEach((column) => {
+        output[column] = safeStringify(isPlainObject(row) ? row[column] : undefined);
+    });
+    return output;
+};
+
+const normalizeRows = (rows, columns) => rows.map((row) => {
     if (Array.isArray(row)) {
         return flattenRow(arrayRowToObject(row));
     }
     if (isPlainObject(row)) {
+        if (isReportColumns(columns)) {
+            return mapRowToColumns(row, columns);
+        }
         return flattenRow(row);
     }
     return { value: row };
@@ -265,8 +313,8 @@ const parseAndRender = (text) => {
     try {
         const parsed = JSON.parse(text);
         const rawRows = normalizeJson(parsed);
-        const rows = normalizeRows(rawRows);
-        const columns = buildColumns(rows);
+        const columns = buildColumns(rawRows);
+        const rows = normalizeRows(rawRows, columns);
 
         if (!rows.length) {
             resetTableState();
