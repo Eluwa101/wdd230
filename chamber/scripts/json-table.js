@@ -84,13 +84,12 @@ const flattenValue = (value, prefix, output) => {
             return;
         }
         const allObjects = value.every((item) => isPlainObject(item));
-        if (allObjects) {
-            value.forEach((item, index) => {
-                flattenValue(item, `${prefix}[${index}]`, output);
-            });
-        } else {
-            output[prefix] = value.map((item) => safeStringify(item)).join(', ');
+        const hasArray = value.some((item) => Array.isArray(item));
+        if (allObjects || hasArray) {
+            output[prefix] = safeStringify(value);
+            return;
         }
+        output[prefix] = value.map((item) => safeStringify(item)).join(', ');
         return;
     }
 
@@ -120,6 +119,7 @@ const flattenRow = (row) => {
 const findFirstArray = (payload) => {
     const queue = [payload];
     const seen = new Set();
+    let fallbackArray = null;
 
     while (queue.length) {
         const current = queue.shift();
@@ -132,7 +132,13 @@ const findFirstArray = (payload) => {
         seen.add(current);
 
         if (Array.isArray(current)) {
-            return current;
+            const allObjects = current.length > 0 && current.every((item) => isPlainObject(item));
+            if (allObjects) {
+                return current;
+            }
+            if (!fallbackArray) {
+                fallbackArray = current;
+            }
         }
 
         Object.values(current).forEach((value) => {
@@ -142,7 +148,7 @@ const findFirstArray = (payload) => {
         });
     }
 
-    return null;
+    return fallbackArray;
 };
 
 const normalizeJson = (payload) => {
@@ -151,6 +157,12 @@ const normalizeJson = (payload) => {
     }
 
     if (payload && typeof payload === 'object') {
+        const preferredKeys = ['report', 'reports', 'data', 'items', 'results', 'rows', 'entries', 'records'];
+        for (const key of preferredKeys) {
+            if (Array.isArray(payload[key])) {
+                return payload[key];
+            }
+        }
         if (Array.isArray(payload.data)) {
             return payload.data;
         }
