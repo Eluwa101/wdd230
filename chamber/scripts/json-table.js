@@ -14,6 +14,8 @@ let currentTable = {
     rows: []
 };
 
+let autoParseTimer = null;
+
 const setStatus = (message, isError = false) => {
     statusText.textContent = message;
     statusText.style.color = isError ? '#a32121' : '#1b6192';
@@ -42,6 +44,48 @@ const safeStringify = (value) => {
     }
 
     return String(value);
+};
+
+const isPlainObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
+
+const flattenValue = (value, prefix, output) => {
+    if (Array.isArray(value)) {
+        if (value.length === 0) {
+            output[prefix] = '';
+            return;
+        }
+        const allObjects = value.every((item) => isPlainObject(item));
+        if (allObjects) {
+            value.forEach((item, index) => {
+                flattenValue(item, `${prefix}[${index}]`, output);
+            });
+        } else {
+            output[prefix] = value.map((item) => safeStringify(item)).join(', ');
+        }
+        return;
+    }
+
+    if (isPlainObject(value)) {
+        Object.keys(value).forEach((key) => {
+            const nextKey = prefix ? `${prefix}.${key}` : key;
+            flattenValue(value[key], nextKey, output);
+        });
+        return;
+    }
+
+    output[prefix] = value;
+};
+
+const flattenRow = (row) => {
+    if (!isPlainObject(row)) {
+        return row;
+    }
+
+    const output = {};
+    Object.keys(row).forEach((key) => {
+        flattenValue(row[key], key, output);
+    });
+    return output;
 };
 
 const normalizeJson = (payload) => {
@@ -88,8 +132,8 @@ const buildColumns = (rows) => {
 };
 
 const normalizeRows = (rows) => rows.map((row) => {
-    if (row && typeof row === 'object' && !Array.isArray(row)) {
-        return row;
+    if (isPlainObject(row)) {
+        return flattenRow(row);
     }
     return { value: row };
 });
@@ -225,7 +269,8 @@ fileInput.addEventListener('change', (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
         textInput.value = e.target.result;
-        setStatus(`Loaded ${file.name}. Click "Generate Table" to continue.`);
+        setStatus(`Loaded ${file.name}. Building table...`);
+        parseAndRender(textInput.value);
     };
     reader.onerror = () => {
         setStatus('Could not read the file. Please try again.', true);
@@ -234,6 +279,15 @@ fileInput.addEventListener('change', (event) => {
 });
 
 parseButton.addEventListener('click', () => parseAndRender(textInput.value));
+
+textInput.addEventListener('input', () => {
+    if (autoParseTimer) {
+        clearTimeout(autoParseTimer);
+    }
+    autoParseTimer = setTimeout(() => {
+        parseAndRender(textInput.value);
+    }, 400);
+});
 
 clearButton.addEventListener('click', () => {
     textInput.value = '';
