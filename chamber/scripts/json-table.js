@@ -174,7 +174,6 @@ const findFirstArray = (payload) => findArrayByPredicate(
     payload,
     (array) => array.length > 0 && array.every((item) => isPlainObject(item))
 );
-};
 
 const normalizeJson = (payload) => {
     const reportArray = findArrayByPredicate(payload, (array) => array.some(hasReportFields));
