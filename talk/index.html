@@ -213,6 +213,56 @@
     min-height:14px;
     text-align:center;
   }
+  .back-link{
+    display:inline-block;
+    margin-top:18px;
+    color:#fff;
+    background:var(--teal-deep);
+    padding:10px 18px;
+    border-radius:999px;
+    text-decoration:none;
+    border:1px solid var(--teal-deep);
+    transition:background .2s ease, color .2s ease;
+  }
+  .back-link:hover{
+    background:var(--accent);
+    color:var(--teal-deep);
+  }
+  .slip-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(19,55,72,0.92);
+    z-index:999;
+    padding:24px;
+    overflow:auto;
+  }
+  .slip-overlay.visible{
+    display:block;
+  }
+  .overlay-content{
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .overlay-toolbar{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .slip-fullscreen{
+    min-height:100vh;
+    background:var(--card);
+    border:1px solid var(--accent);
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    padding:34px 30px;
+  }
+  @media print {
+    body * { visibility:hidden !important; }
+    .slip, .slip * { visibility: visible !important; }
+    .slip { position: static !important; width: auto !important; margin: 0 !important; box-shadow: none !important; border:none !important; }
+    .slip-overlay { display:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -221,6 +271,7 @@
     <div class="eyebrow">Ward Bulletin · Assignment Slip</div>
     <h1>Sacrament Meeting Assignment Generator</h1>
     <div class="sub">Fill in the details on the left — the assignment notice updates on the right. Copy or download when ready.</div>
+    <a class="back-link" href="../index.html">← Back to Home</a>
   </header>
 
   <div class="grid">
@@ -277,8 +328,18 @@ Also feel free to reference any other materials relating to the topic in the Gos
       <div class="actions">
         <button id="copyBtn">Copy message</button>
         <button id="downloadBtn" class="secondary">Download .txt</button>
+        <button id="printBtn" class="secondary">Print</button>
+        <button id="fullscreenBtn" class="secondary">Full screen</button>
       </div>
       <div class="status" id="status"></div>
+    </div>
+    <div class="slip-overlay" id="slipOverlay" aria-hidden="true">
+      <div class="overlay-content">
+        <div class="overlay-toolbar">
+          <button id="closeOverlay" class="secondary">Close</button>
+        </div>
+        <div class="slip slip-fullscreen" id="slipFullscreen"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -464,6 +525,21 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   const status = document.getElementById('status');
   status.textContent = 'Downloaded.';
   setTimeout(() => status.textContent = '', 2500);
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+document.getElementById('fullscreenBtn').addEventListener('click', () => {
+  const overlay = document.getElementById('slipOverlay');
+  overlay.classList.add('visible');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.getElementById('slipFullscreen').innerHTML = document.getElementById('slip').innerHTML;
+});
+
+document.getElementById('closeOverlay').addEventListener('click', () => {
+  const overlay = document.getElementById('slipOverlay');
+  overlay.classList.remove('visible');
+  overlay.setAttribute('aria-hidden', 'true');
 });
 
 render();
