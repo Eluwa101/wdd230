@@ -5,22 +5,22 @@
 <title>Sacrament Meeting Assignment Generator</title>
 <style>
   :root{
-    --paper:#FBF8F2;
-    --paper-line:#DCD4C0;
-    --ink:#2B2A28;
-    --ink-soft:#6B6559;
-    --teal:#2F5D57;
-    --teal-deep:#1E3E3A;
-    --gold:#B08A4E;
-    --card:#FFFFFF;
-    --error:#A2453A;
+    --paper:#e5f3fb;
+    --paper-line:#9cc8df;
+    --ink:#133748;
+    --ink-soft:#385d78;
+    --teal:#133748;
+    --teal-deep:#0f2c3d;
+    --accent:#66c0cc;
+    --card:#f5fbff;
+    --error:#a2453a;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--paper);
     color:var(--ink);
-    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    font-family:'Roboto',Arial,sans-serif;
     padding:32px 20px 60px;
   }
   .wrap{
@@ -36,7 +36,7 @@
     letter-spacing:.18em;
     text-transform:uppercase;
     font-size:11px;
-    color:var(--teal);
+    color:var(--accent);
     margin-bottom:8px;
   }
   h1{
@@ -61,8 +61,8 @@
   }
   .panel{
     background:var(--card);
-    border:1px solid var(--paper-line);
-    border-radius:2px;
+    border:1px solid var(--accent);
+    border-radius:8px;
     padding:26px 26px 30px;
   }
   .panel h2{
@@ -70,7 +70,7 @@
     font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
-    color:var(--gold);
+    color:var(--teal-deep);
     margin:0 0 18px;
     padding-bottom:10px;
     border-bottom:1px solid var(--paper-line);
@@ -111,17 +111,17 @@
   .slip-outer{position:sticky; top:20px;}
   .slip{
     background:var(--card);
-    border:1px solid var(--paper-line);
+    border:1px solid var(--accent);
     padding:34px 30px;
     position:relative;
-    box-shadow:0 1px 0 var(--paper-line);
+    box-shadow:0 8px 24px rgba(19,55,72,0.14);
   }
   .slip:before{
     content:"";
     position:absolute;
     left:0;right:0;top:0;
     height:5px;
-    background:linear-gradient(90deg,var(--teal) 0 50%, var(--gold) 50% 100%);
+    background:linear-gradient(90deg,var(--teal) 0 50%, var(--accent) 50% 100%);
   }
   .slip-greeting{
     font-size:19px;
@@ -192,7 +192,7 @@
     font-weight:600;
     letter-spacing:.02em;
     padding:11px 18px;
-    border-radius:2px;
+    border-radius:4px;
     border:1px solid var(--teal-deep);
     cursor:pointer;
     background:var(--teal-deep);
@@ -200,8 +200,9 @@
     flex:1;
   }
   button.secondary{
-    background:transparent;
+    background:var(--accent);
     color:var(--teal-deep);
+    border-color:var(--teal-deep);
   }
   button:hover{opacity:.88;}
   .status{
