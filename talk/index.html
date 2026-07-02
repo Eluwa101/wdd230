@@ -262,11 +262,47 @@
     box-shadow:0 15px 40px rgba(0,0,0,0.25);
     padding:34px 30px;
   }
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
   @media print {
+    html, body {
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
     body * { visibility:hidden !important; }
     .slip, .slip * { visibility: visible !important; }
-    .slip { position: static !important; width: auto !important; margin: 0 !important; box-shadow: none !important; border:none !important; }
+    .slip {
+      position: static !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 18px 20px !important;
+      box-shadow: none !important;
+      border: none !important;
+      min-height: auto !important;
+      overflow: visible !important;
+      page-break-inside: avoid !important;
+      page-break-after: avoid !important;
+    }
+    .slip * {
+      color: #000 !important;
+    }
+    .slip .divider {
+      margin: 16px 0 !important;
+    }
     .slip-overlay { display:none !important; }
+    .slip ul, .slip ol {
+      page-break-inside: avoid !important;
+    }
+    .slip p, .slip li, .slip .fact, .slip .sign-off {
+      orphans: 3;
+      widows: 3;
+    }
   }
 </style>
 </head>
