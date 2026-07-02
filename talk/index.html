@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sacrament Meeting Assignment Generator</title>
+<style>
+  :root{
+    --paper:#FBF8F2;
+    --paper-line:#DCD4C0;
+    --ink:#2B2A28;
+    --ink-soft:#6B6559;
+    --teal:#2F5D57;
+    --teal-deep:#1E3E3A;
+    --gold:#B08A4E;
+    --card:#FFFFFF;
+    --error:#A2453A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    padding:32px 20px 60px;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+  }
+  header.page-head{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .eyebrow{
+    font-family:'Courier New',monospace;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--teal);
+    margin-bottom:8px;
+  }
+  h1{
+    font-size:32px;
+    margin:0 0 6px;
+    font-weight:600;
+    color:var(--teal-deep);
+  }
+  .sub{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    align-items:start;
+  }
+  @media (max-width:820px){
+    .grid{grid-template-columns:1fr;}
+  }
+  .panel{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:2px;
+    padding:26px 26px 30px;
+  }
+  .panel h2{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 18px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--paper-line);
+  }
+  label{
+    display:block;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:16px 0 5px;
+  }
+  label.first{margin-top:0;}
+  input[type=text], input[type=date], textarea, select{
+    width:100%;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:#FEFDFB;
+    border:1px solid var(--paper-line);
+    border-radius:2px;
+    padding:9px 11px;
+    resize:vertical;
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:none;
+    border-color:var(--teal);
+  }
+  textarea{min-height:74px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .hint{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    color:#9A927F;
+    margin-top:4px;
+  }
+
+  /* Preview slip */
+  .slip-outer{position:sticky; top:20px;}
+  .slip{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    padding:34px 30px;
+    position:relative;
+    box-shadow:0 1px 0 var(--paper-line);
+  }
+  .slip:before{
+    content:"";
+    position:absolute;
+    left:0;right:0;top:0;
+    height:5px;
+    background:linear-gradient(90deg,var(--teal) 0 50%, var(--gold) 50% 100%);
+  }
+  .slip-greeting{
+    font-size:19px;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  .slip-greeting .name{color:var(--teal-deep); font-weight:600;}
+  .slip-body p{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    line-height:1.65;
+    color:var(--ink);
+    margin:0 0 14px;
+  }
+  .fact{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    margin:10px 0;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+  }
+  .fact .icon{width:20px;text-align:center;flex-shrink:0;}
+  .fact .label{color:var(--ink-soft); min-width:100px;}
+  .fact .val{font-weight:600; color:var(--teal-deep);}
+  .divider{
+    border:none;
+    border-top:1px dashed var(--paper-line);
+    margin:20px 0;
+  }
+  .scriptures{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    line-height:1.7;
+    padding-left:18px;
+    margin:6px 0 0;
+  }
+  .resources{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12.5px;
+    line-height:1.7;
+    color:var(--teal-deep);
+    padding-left:18px;
+    word-break:break-all;
+    margin:6px 0 0;
+  }
+  .sign-off{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13.5px;
+    margin-top:22px;
+    color:var(--ink);
+  }
+  .sign-off .org{
+    display:block;
+    margin-top:10px;
+    font-weight:700;
+    color:var(--teal-deep);
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+  button{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:11px 18px;
+    border-radius:2px;
+    border:1px solid var(--teal-deep);
+    cursor:pointer;
+    background:var(--teal-deep);
+    color:#fff;
+    flex:1;
+  }
+  button.secondary{
+    background:transparent;
+    color:var(--teal-deep);
+  }
+  button:hover{opacity:.88;}
+  .status{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--teal);
+    margin-top:8px;
+    min-height:14px;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page-head">
+    <div class="eyebrow">Ward Bulletin · Assignment Slip</div>
+    <h1>Sacrament Meeting Assignment Generator</h1>
+    <div class="sub">Fill in the details on the left — the assignment notice updates on the right. Copy or download when ready.</div>
+  </header>
+
+  <div class="grid">
+    <!-- FORM -->
+    <div class="panel">
+      <h2>Assignment Details</h2>
+
+      <label class="first">Recipient's name</label>
+      <input type="text" id="name" value="Sister Endurance Akpan Oyama">
+
+      <div class="row2">
+        <div>
+          <label>Meeting date</label>
+          <input type="date" id="date" value="2026-06-28">
+        </div>
+        <div>
+          <label>Time allotted</label>
+          <input type="text" id="time" value="7–10 minutes">
+        </div>
+      </div>
+
+      <label>Assignment</label>
+      <input type="text" id="assignment" value="Give a Talk">
+
+      <label>Order / role (optional)</label>
+      <input type="text" id="order" value="Second Speaker">
+
+      <label>Topic</label>
+      <input type="text" id="topic" value="Enduring to the End">
+
+      <label>Scriptures to consider (one per line)</label>
+      <textarea id="scriptures">2 Nephi 31:20
+Matthew 24:13
+Doctrine and Covenants 14:7
+Mosiah 5:15</textarea>
+
+      <label>Context paragraph</label>
+      <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants until the end.</textarea>
+
+      <label>Study resources (one per line — label | url, or just a note)</label>
+      <textarea id="resources">Gospel Topics study guide | https://www.churchofjesuschrist.org/study/manual/gospel-topics/endure-to-the-end-study-guide?lang=eng
+"The Strength to Endure," General Conference 2013 | https://www.churchofjesuschrist.org/study/general-conference/2013/10/the-strength-to-endure?lang=eng
+Also feel free to reference any other materials relating to the topic in the Gospel Library.</textarea>
+
+      <label>Signed by</label>
+      <input type="text" id="signoff" value="The Bishopric">
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="slip-outer">
+      <div class="slip" id="slip">
+        <!-- filled by JS -->
+      </div>
+      <div class="actions">
+        <button id="copyBtn">Copy message</button>
+        <button id="downloadBtn" class="secondary">Download .txt</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function esc(s){
+  const d = document.createElement('div');
+  d.innerText = s;
+  return d.innerHTML;
+}
+
+function formatDate(iso){
+  if(!iso) return '';
+  const [y,m,d] = iso.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const weekday = dt.toLocaleDateString('en-US', { weekday: 'long' });
+  const month = dt.toLocaleDateString('en-US', { month: 'long' });
+  const day = dt.getDate();
+  const suffix = (day % 10 === 1 && day !== 11) ? 'st'
+               : (day % 10 === 2 && day !== 12) ? 'nd'
+               : (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+  return `${weekday}, ${month} ${day}${suffix}, ${y}`;
+}
+
+function parseLines(id){
+  return document.getElementById(id).value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+
+function buildPlainText(){
+  const name = document.getElementById('name').value.trim();
+  const dateStr = formatDate(document.getElementById('date').value);
+  const time = document.getElementById('time').value.trim();
+  const assignment = document.getElementById('assignment').value.trim();
+  const order = document.getElementById('order').value.trim();
+  const topic = document.getElementById('topic').value.trim();
+  const scriptures = parseLines('scriptures');
+  const context = document.getElementById('context').value.trim();
+  const resources = parseLines('resources');
+  const signoff = document.getElementById('signoff').value.trim();
+
+  let assignmentLine = `*Assignment:* *${assignment}*`;
+  if(order) assignmentLine += ` (*${order}*)`;
+
+  const lines = [];
+  lines.push(`Dear ${name},`);
+  lines.push('');
+  lines.push(`You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:`);
+  lines.push('');
+  lines.push(`📅 *Date:* ${dateStr}`);
+  lines.push('');
+  lines.push(`🗒 ${assignmentLine}`);
+  lines.push('');
+  lines.push(`⏰ *Time Allotted:* *${time}*`);
+  lines.push('');
+  if(topic){
+    lines.push(`🎙 *Topic:* "*${topic}*"`);
+    lines.push('');
+  }
+  if(scriptures.length){
+    lines.push('Scriptures to consider:');
+    scriptures.forEach(s => lines.push(`• ${s}`));
+    lines.push('');
+  }
+  if(context){
+    lines.push(context);
+    lines.push('');
+  }
+  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.`);
+  lines.push('');
+  lines.push(`May the Lord bless you as you serve faithfully. 🙏`);
+  lines.push('');
+  lines.push('');
+  if(resources.length){
+    lines.push('*Study resources:*');
+    lines.push('');
+    resources.forEach((r,i) => {
+      if(r.includes('|')){
+        const [label, url] = r.split('|').map(x => x.trim());
+        lines.push(`${i+1}. ${label} — ${url}`);
+      } else {
+        lines.push(`${i+1}. ${r}`);
+      }
+    });
+    lines.push('');
+  }
+  if(signoff){
+    lines.push(`**– ${signoff}**`);
+  }
+  return lines.join('\n');
+}
+
+function render(){
+  const name = document.getElementById('name').value.trim() || '—';
+  const dateStr = formatDate(document.getElementById('date').value) || '—';
+  const time = document.getElementById('time').value.trim() || '—';
+  const assignment = document.getElementById('assignment').value.trim() || '—';
+  const order = document.getElementById('order').value.trim();
+  const topic = document.getElementById('topic').value.trim();
+  const scriptures = parseLines('scriptures');
+  const context = document.getElementById('context').value.trim();
+  const resources = parseLines('resources');
+  const signoff = document.getElementById('signoff').value.trim();
+
+  let html = '';
+  html += `<p class="slip-greeting">Dear <span class="name">${esc(name)}</span>,</p>`;
+  html += `<div class="slip-body"><p>You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:</p></div>`;
+
+  html += `<div class="fact"><span class="icon">📅</span><span class="label">Date</span><span class="val">${esc(dateStr)}</span></div>`;
+  html += `<div class="fact"><span class="icon">🗒</span><span class="label">Assignment</span><span class="val">${esc(assignment)}${order ? ' ('+esc(order)+')' : ''}</span></div>`;
+  html += `<div class="fact"><span class="icon">⏰</span><span class="label">Time allotted</span><span class="val">${esc(time)}</span></div>`;
+  if(topic){
+    html += `<div class="fact"><span class="icon">🎙</span><span class="label">Topic</span><span class="val">"${esc(topic)}"</span></div>`;
+  }
+
+  if(scriptures.length){
+    html += `<hr class="divider">`;
+    html += `<div class="slip-body"><p style="margin-bottom:4px;">Scriptures to consider:</p></div>`;
+    html += `<ul class="scriptures">` + scriptures.map(s => `<li>${esc(s)}</li>`).join('') + `</ul>`;
+  }
+
+  if(context){
+    html += `<div class="slip-body" style="margin-top:16px;"><p>${esc(context)}</p></div>`;
+  }
+
+  html += `<div class="slip-body"><p>We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.</p><p>May the Lord bless you as you serve faithfully. 🙏</p></div>`;
+
+  if(resources.length){
+    html += `<hr class="divider">`;
+    html += `<div class="slip-body"><p style="margin-bottom:4px;"><strong>Study resources:</strong></p></div>`;
+    html += `<ol class="resources">` + resources.map(r => {
+      if(r.includes('|')){
+        const [label, url] = r.split('|').map(x => x.trim());
+        return `<li>${esc(label)} — ${esc(url)}</li>`;
+      }
+      return `<li>${esc(r)}</li>`;
+    }).join('') + `</ol>`;
+  }
+
+  if(signoff){
+    html += `<div class="sign-off">With love and appreciation,<span class="org">– ${esc(signoff)}</span></div>`;
+  }
+
+  document.getElementById('slip').innerHTML = html;
+}
+
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('input', render);
+});
+
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  const text = buildPlainText();
+  const status = document.getElementById('status');
+  try{
+    await navigator.clipboard.writeText(text);
+    status.textContent = 'Copied to clipboard.';
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Copied to clipboard.';
+  }
+  setTimeout(() => status.textContent = '', 2500);
+});
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const text = buildPlainText();
+  const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `assignment_${name}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const status = document.getElementById('status');
+  status.textContent = 'Downloaded.';
+  setTimeout(() => status.textContent = '', 2500);
+});
+
+render();
+</script>
+</body>
+</html>
