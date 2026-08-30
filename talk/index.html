@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sacrament Meeting Assignment Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
@@ -21,7 +22,7 @@
     margin:0;
     background:var(--paper);
     color:var(--ink);
-    font-family:'Roboto',Arial,sans-serif;
+    font-family:'Roboto','Helvetica Neue',Arial,sans-serif;
     padding:40px 24px 72px;
     line-height:1.6;
   }
@@ -60,6 +61,7 @@
   }
   @media (max-width:820px){
     .grid{grid-template-columns:1fr;}
+    .slip-outer{position:static !important;}
   }
   .panel{
     background:var(--card);
@@ -95,10 +97,12 @@
     border-radius:4px;
     padding:12px 14px;
     resize:vertical;
+    box-sizing:border-box;
   }
   input:focus, textarea:focus, select:focus{
     outline:none;
     border-color:var(--teal);
+    box-shadow:0 0 0 3px rgba(102,192,204,0.1);
   }
   textarea{min-height:74px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -117,6 +121,7 @@
     padding:40px 36px;
     position:relative;
     box-shadow:0 10px 30px rgba(19,55,72,0.12);
+    border-radius:8px;
   }
   .slip:before{
     content:"";
@@ -124,6 +129,7 @@
     left:0;right:0;top:0;
     height:5px;
     background:linear-gradient(90deg,var(--teal) 0 50%, var(--accent) 50% 100%);
+    border-radius:8px 8px 0 0;
   }
   .slip-greeting{
     font-size:22px;
@@ -160,6 +166,16 @@
     line-height:1.8;
     padding-left:20px;
     margin:8px 0 0;
+    list-style:none;
+  }
+  .scriptures li{
+    margin-bottom:6px;
+  }
+  .scriptures li:before{
+    content:"•  ";
+    color:var(--teal-deep);
+    font-weight:600;
+    margin-right:4px;
   }
   .resources{
     font-family:'Helvetica Neue',Arial,sans-serif;
@@ -167,8 +183,11 @@
     line-height:1.85;
     color:var(--teal-deep);
     padding-left:20px;
-    word-break:break-all;
+    word-break:break-word;
     margin:8px 0 0;
+  }
+  .resources li{
+    margin-bottom:8px;
   }
   .sign-off{
     font-family:'Helvetica Neue',Arial,sans-serif;
@@ -186,7 +205,7 @@
   .actions{
     display:flex;
     flex-wrap:wrap;
-    gap:14px;
+    gap:12px;
     margin-top:24px;
   }
   button{
@@ -195,30 +214,40 @@
     justify-content:center;
     min-width:140px;
     font-family:'Helvetica Neue',Arial,sans-serif;
-    font-size:14px;
+    font-size:13px;
     font-weight:600;
     letter-spacing:.02em;
-    padding:12px 20px;
+    padding:12px 16px;
     border-radius:5px;
     border:1px solid var(--teal-deep);
     cursor:pointer;
     background:var(--teal-deep);
     color:#fff;
     flex:1;
+    min-height:44px;
+    transition:all 0.2s ease;
   }
   button.secondary{
     background:var(--accent);
     color:var(--teal-deep);
     border-color:var(--teal-deep);
   }
-  button:hover{opacity:.88;}
+  button:hover{
+    opacity:.88;
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(19,55,72,0.15);
+  }
+  button:active{
+    transform:translateY(0);
+  }
   .status{
     font-family:'Helvetica Neue',Arial,sans-serif;
     font-size:12px;
     color:var(--teal);
     margin-top:8px;
-    min-height:14px;
+    min-height:18px;
     text-align:center;
+    font-weight:500;
   }
   .back-link{
     display:inline-block;
@@ -229,7 +258,7 @@
     border-radius:999px;
     text-decoration:none;
     border:1px solid var(--teal-deep);
-    transition:background .2s ease, color .2s ease;
+    transition:all .2s ease;
   }
   .back-link:hover{
     background:var(--accent);
@@ -245,11 +274,15 @@
     overflow:auto;
   }
   .slip-overlay.visible{
-    display:block;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   .overlay-content{
     max-width:1200px;
-    margin:0 auto;
+    width:100%;
+    max-height:90vh;
+    overflow:auto;
   }
   .overlay-toolbar{
     display:flex;
@@ -258,11 +291,11 @@
     margin-bottom:18px;
   }
   .slip-fullscreen{
-    min-height:100vh;
     background:var(--card);
     border:1px solid var(--accent);
     box-shadow:0 15px 40px rgba(0,0,0,0.25);
     padding:34px 30px;
+    border-radius:8px;
   }
   @page {
     size: auto;
@@ -275,55 +308,50 @@
       margin: 0;
       padding: 0;
       background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     body * { visibility:hidden !important; }
     .slip, .slip * { visibility: visible !important; }
     .slip {
       position: static !important;
-      width: auto !important;
-      max-width: calc(100% - 36px) !important;
-      margin: auto !important;
-      padding: 20px 18px !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
       box-shadow: none !important;
       border: none !important;
-      min-height: auto !important;
       overflow: visible !important;
       page-break-inside: avoid !important;
       page-break-after: avoid !important;
       line-height: 1.75 !important;
-      font-size: 15px !important;
+      font-size: 14px !important;
     }
+    .slip:before { display: none !important; }
     .slip * {
       color: #000 !important;
     }
     .slip .slip-greeting {
-      font-size: 24px !important;
-      margin-bottom: 20px !important;
+      font-size: 22px !important;
+      margin-bottom: 16px !important;
     }
     .slip .slip-body p,
     .slip .resources,
     .slip .scriptures,
     .slip .sign-off,
     .slip .fact {
-      font-size: 15px !important;
-      line-height: 1.8 !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
     }
     .slip .fact {
-      margin: 14px 0 !important;
+      margin: 12px 0 !important;
     }
     .slip .divider {
-      margin: 20px 0 !important;
+      margin: 16px 0 !important;
     }
-    .slip-overlay { display:none !important; }
     .slip ul, .slip ol {
       page-break-inside: avoid !important;
     }
     .slip p, .slip li, .slip .fact, .slip .sign-off {
-      orphans: 3;
-      widows: 3;
+      orphans: 2;
+      widows: 2;
     }
   }
 </style>
@@ -372,7 +400,7 @@ Doctrine and Covenants 14:7
 Mosiah 5:15</textarea>
 
       <label>Context paragraph</label>
-      <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants un[...]
+      <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants.</textarea>
 
       <label>Study resources (one per line — label | url, or just a note)</label>
       <textarea id="resources">Gospel Topics study guide | https://www.churchofjesuschrist.org/study/manual/gospel-topics/endure-to-the-end-study-guide?lang=eng
@@ -389,18 +417,18 @@ Also feel free to reference any other materials relating to the topic in the Gos
         <!-- filled by JS -->
       </div>
       <div class="actions">
-        <button id="copyBtn">Copy message</button>
-        <button id="downloadBtn" class="secondary">Download .txt</button>
+        <button id="copyBtn">Copy</button>
+        <button id="downloadBtn" class="secondary">Download TXT</button>
         <button id="downloadPdfBtn" class="secondary">Download PDF</button>
         <button id="printBtn" class="secondary">Print</button>
-        <button id="fullscreenBtn" class="secondary">Full screen</button>
+        <button id="fullscreenBtn" class="secondary">View</button>
       </div>
       <div class="status" id="status"></div>
     </div>
     <div class="slip-overlay" id="slipOverlay" aria-hidden="true">
       <div class="overlay-content">
         <div class="overlay-toolbar">
-          <button id="closeOverlay" class="secondary">Close</button>
+          <button id="closeOverlay" class="secondary">✕ Close</button>
         </div>
         <div class="slip slip-fullscreen" id="slipFullscreen"></div>
       </div>
@@ -417,15 +445,19 @@ function esc(s){
 
 function formatDate(iso){
   if(!iso) return '';
-  const [y,m,d] = iso.split('-').map(Number);
-  const dt = new Date(y, m-1, d);
-  const weekday = dt.toLocaleDateString('en-US', { weekday: 'long' });
-  const month = dt.toLocaleDateString('en-US', { month: 'long' });
-  const day = dt.getDate();
-  const suffix = (day % 10 === 1 && day !== 11) ? 'st'
-               : (day % 10 === 2 && day !== 12) ? 'nd'
-               : (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
-  return `${weekday}, ${month} ${day}${suffix}, ${y}`;
+  try {
+    const [y,m,d] = iso.split('-').map(Number);
+    const dt = new Date(y, m-1, d);
+    const weekday = dt.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = dt.toLocaleDateString('en-US', { month: 'long' });
+    const day = dt.getDate();
+    const suffix = (day % 10 === 1 && day !== 11) ? 'st'
+                 : (day % 10 === 2 && day !== 12) ? 'nd'
+                 : (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+    return `${weekday}, ${month} ${day}${suffix}, ${y}`;
+  } catch(e) {
+    return '';
+  }
 }
 
 function parseLines(id){
@@ -462,38 +494,41 @@ function buildPlainText(){
   lines.push(`⏰ *Time Allotted:* *${time}*`);
   lines.push('');
   if(topic){
-    lines.push(`🎙 *Topic:* "*${topic}*"`);
+    lines.push(`🎙 *Topic:* "${topic}"`);
     lines.push('');
   }
   if(scriptures.length){
     lines.push('Scriptures to consider:');
-    scriptures.forEach(s => lines.push(`• ${s}`));
+    scriptures.forEach(s => lines.push(`  • ${s}`));
     lines.push('');
   }
   if(context){
     lines.push(context);
     lines.push('');
   }
-  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting beg[...]
+  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.`);
   lines.push('');
   lines.push(`May the Lord bless you as you serve faithfully. 🙏`);
   lines.push('');
-  lines.push('');
+  
   if(resources.length){
+    lines.push('');
     lines.push('*Study resources:*');
     lines.push('');
     resources.forEach((r,i) => {
       if(r.includes('|')){
         const [label, url] = r.split('|').map(x => x.trim());
-        lines.push(`${i+1}. ${label} — ${url}`);
+        lines.push(`${i+1}. ${label}`);
+        lines.push(`   ${url}`);
       } else {
         lines.push(`${i+1}. ${r}`);
       }
     });
-    lines.push('');
   }
+  
+  lines.push('');
   if(signoff){
-    lines.push(`**– ${signoff}**`);
+    lines.push(`– ${signoff}`);
   }
   return lines.join('\n');
 }
@@ -515,15 +550,16 @@ function render(){
   html += `<div class="slip-body"><p>You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:</p></div>`;
 
   html += `<div class="fact"><span class="icon">📅</span><span class="label">Date</span><span class="val">${esc(dateStr)}</span></div>`;
-  html += `<div class="fact"><span class="icon">🗒</span><span class="label">Assignment</span><span class="val">${esc(assignment)}${order ? ' ('+esc(order)+')' : ''}</span></div>`;
+  html += `<div class="fact"><span class="icon">🗒</span><span class="label">Assignment</span><span class="val">${esc(assignment)}${order ? ' (' + esc(order) + ')' : ''}</span></div>`;
   html += `<div class="fact"><span class="icon">⏰</span><span class="label">Time allotted</span><span class="val">${esc(time)}</span></div>`;
+  
   if(topic){
     html += `<div class="fact"><span class="icon">🎙</span><span class="label">Topic</span><span class="val">"${esc(topic)}"</span></div>`;
   }
 
   if(scriptures.length){
     html += `<hr class="divider">`;
-    html += `<div class="slip-body"><p style="margin-bottom:4px;">Scriptures to consider:</p></div>`;
+    html += `<div class="slip-body"><p style="margin-bottom:4px;"><strong>Scriptures to consider:</strong></p></div>`;
     html += `<ul class="scriptures">` + scriptures.map(s => `<li>${esc(s)}</li>`).join('') + `</ul>`;
   }
 
@@ -531,7 +567,7 @@ function render(){
     html += `<div class="slip-body" style="margin-top:16px;"><p>${esc(context)}</p></div>`;
   }
 
-  html += `<div class="slip-body"><p>We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand[...]
+  html += `<div class="slip-body"><p>We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.</p></div>`;
 
   if(resources.length){
     html += `<hr class="divider">`;
@@ -539,7 +575,7 @@ function render(){
     html += `<ol class="resources">` + resources.map(r => {
       if(r.includes('|')){
         const [label, url] = r.split('|').map(x => x.trim());
-        return `<li>${esc(label)} — ${esc(url)}</li>`;
+        return `<li><strong>${esc(label)}</strong><br><small>${esc(url)}</small></li>`;
       }
       return `<li>${esc(r)}</li>`;
     }).join('') + `</ol>`;
@@ -552,16 +588,18 @@ function render(){
   document.getElementById('slip').innerHTML = html;
 }
 
+// Event listeners
 document.querySelectorAll('input, textarea').forEach(el => {
   el.addEventListener('input', render);
 });
 
+// Copy to clipboard
 document.getElementById('copyBtn').addEventListener('click', async () => {
   const text = buildPlainText();
   const status = document.getElementById('status');
   try{
     await navigator.clipboard.writeText(text);
-    status.textContent = 'Copied to clipboard.';
+    status.textContent = '✓ Copied to clipboard';
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = text;
@@ -569,46 +607,66 @@ document.getElementById('copyBtn').addEventListener('click', async () => {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    status.textContent = 'Copied to clipboard.';
+    status.textContent = '✓ Copied to clipboard';
   }
   setTimeout(() => status.textContent = '', 2500);
 });
 
+// Download as text
 document.getElementById('downloadBtn').addEventListener('click', () => {
-  const text = buildPlainText();
-  const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `assignment_${name}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  const status = document.getElementById('status');
-  status.textContent = 'Downloaded.';
-  setTimeout(() => status.textContent = '', 2500);
+  try {
+    const text = buildPlainText();
+    const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `assignment_${name}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    const status = document.getElementById('status');
+    status.textContent = '✓ Downloaded TXT file';
+    setTimeout(() => status.textContent = '', 2500);
+  } catch(e) {
+    console.error('Download error:', e);
+    document.getElementById('status').textContent = '✗ Download failed';
+  }
 });
 
+// Download as PDF
 document.getElementById('downloadPdfBtn').addEventListener('click', () => {
-  const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
-  const slipElement = document.getElementById('slip');
-  const opt = {
-    margin: 10,
-    filename: `assignment_${name}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
-  };
-  html2pdf().set(opt).from(slipElement).save();
-  const status = document.getElementById('status');
-  status.textContent = 'PDF downloaded.';
-  setTimeout(() => status.textContent = '', 2500);
+  try {
+    const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
+    const slipElement = document.getElementById('slip');
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: `assignment_${name}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, logging: false },
+      jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+    };
+    html2pdf().set(opt).from(slipElement).save().then(() => {
+      const status = document.getElementById('status');
+      status.textContent = '✓ PDF downloaded';
+      setTimeout(() => status.textContent = '', 2500);
+    }).catch((err) => {
+      console.error('PDF error:', err);
+      document.getElementById('status').textContent = '✗ PDF generation failed';
+    });
+  } catch(e) {
+    console.error('PDF error:', e);
+    document.getElementById('status').textContent = '✗ PDF generation failed';
+  }
 });
 
-document.getElementById('printBtn').addEventListener('click', () => window.print());
+// Print
+document.getElementById('printBtn').addEventListener('click', () => {
+  window.print();
+});
 
+// Fullscreen view
 document.getElementById('fullscreenBtn').addEventListener('click', () => {
   const overlay = document.getElementById('slipOverlay');
   overlay.classList.add('visible');
@@ -616,12 +674,25 @@ document.getElementById('fullscreenBtn').addEventListener('click', () => {
   document.getElementById('slipFullscreen').innerHTML = document.getElementById('slip').innerHTML;
 });
 
+// Close fullscreen
 document.getElementById('closeOverlay').addEventListener('click', () => {
   const overlay = document.getElementById('slipOverlay');
   overlay.classList.remove('visible');
   overlay.setAttribute('aria-hidden', 'true');
 });
 
+// Close on escape key
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){
+    const overlay = document.getElementById('slipOverlay');
+    if(overlay.classList.contains('visible')){
+      overlay.classList.remove('visible');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+  }
+});
+
+// Initial render
 render();
 </script>
 </body>
