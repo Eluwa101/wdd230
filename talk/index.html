@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Sacrament Meeting Assignment Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root{
     --paper:#e5f3fb;
@@ -371,7 +372,7 @@ Doctrine and Covenants 14:7
 Mosiah 5:15</textarea>
 
       <label>Context paragraph</label>
-      <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants until the end.</textarea>
+      <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants un[...]
 
       <label>Study resources (one per line — label | url, or just a note)</label>
       <textarea id="resources">Gospel Topics study guide | https://www.churchofjesuschrist.org/study/manual/gospel-topics/endure-to-the-end-study-guide?lang=eng
@@ -390,6 +391,7 @@ Also feel free to reference any other materials relating to the topic in the Gos
       <div class="actions">
         <button id="copyBtn">Copy message</button>
         <button id="downloadBtn" class="secondary">Download .txt</button>
+        <button id="downloadPdfBtn" class="secondary">Download PDF</button>
         <button id="printBtn" class="secondary">Print</button>
         <button id="fullscreenBtn" class="secondary">Full screen</button>
       </div>
@@ -472,7 +474,7 @@ function buildPlainText(){
     lines.push(context);
     lines.push('');
   }
-  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.`);
+  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting beg[...]
   lines.push('');
   lines.push(`May the Lord bless you as you serve faithfully. 🙏`);
   lines.push('');
@@ -529,7 +531,7 @@ function render(){
     html += `<div class="slip-body" style="margin-top:16px;"><p>${esc(context)}</p></div>`;
   }
 
-  html += `<div class="slip-body"><p>We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.</p><p>May the Lord bless you as you serve faithfully. 🙏</p></div>`;
+  html += `<div class="slip-body"><p>We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand[...]
 
   if(resources.length){
     html += `<hr class="divider">`;
@@ -586,6 +588,22 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   URL.revokeObjectURL(url);
   const status = document.getElementById('status');
   status.textContent = 'Downloaded.';
+  setTimeout(() => status.textContent = '', 2500);
+});
+
+document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+  const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
+  const slipElement = document.getElementById('slip');
+  const opt = {
+    margin: 10,
+    filename: `assignment_${name}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+  };
+  html2pdf().set(opt).from(slipElement).save();
+  const status = document.getElementById('status');
+  status.textContent = 'PDF downloaded.';
   setTimeout(() => status.textContent = '', 2500);
 });
 
