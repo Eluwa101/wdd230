@@ -232,6 +232,12 @@
     color:var(--teal-deep);
     border-color:var(--teal-deep);
   }
+  button[disabled]{
+    opacity:0.6;
+    cursor:default;
+    transform:none;
+    box-shadow:none;
+  }
   button:hover{
     opacity:.88;
     transform:translateY(-1px);
@@ -297,62 +303,22 @@
     padding:34px 30px;
     border-radius:8px;
   }
+  /* PDF/print-friendly container (hidden on screen) */
+  .output-document{display:none;}
+  @media (min-width:0){
+    .output-document{display:none !important;}
+  }
   @page {
     size: auto;
     margin: 8mm;
   }
   @media print {
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: #fff;
-    }
-    body * { visibility:hidden !important; }
-    .slip, .slip * { visibility: visible !important; }
-    .slip {
-      position: static !important;
-      width: 100% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
-      overflow: visible !important;
-      page-break-inside: avoid !important;
-      page-break-after: avoid !important;
-      line-height: 1.75 !important;
-      font-size: 14px !important;
-    }
-    .slip:before { display: none !important; }
-    .slip * {
-      color: #000 !important;
-    }
-    .slip .slip-greeting {
-      font-size: 22px !important;
-      margin-bottom: 16px !important;
-    }
-    .slip .slip-body p,
-    .slip .resources,
-    .slip .scriptures,
-    .slip .sign-off,
-    .slip .fact {
-      font-size: 14px !important;
-      line-height: 1.6 !important;
-    }
-    .slip .fact {
-      margin: 12px 0 !important;
-    }
-    .slip .divider {
-      margin: 16px 0 !important;
-    }
-    .slip ul, .slip ol {
-      page-break-inside: avoid !important;
-    }
-    .slip p, .slip li, .slip .fact, .slip .sign-off {
-      orphans: 2;
-      widows: 2;
-    }
+    /* hide everything except the output document */
+    body > * { display: none !important; }
+    #outputDocument { display: block !important; }
+    #outputDocument { width: 100%; max-width: 100%; margin: 0; padding: 0; }
+    #outputDocument * { color: #000 !important; }
+    #outputDocument .slip { box-shadow:none; border:none; padding: 0.5in; }
   }
 </style>
 </head>
@@ -370,44 +336,44 @@
     <div class="panel">
       <h2>Assignment Details</h2>
 
-      <label class="first">Recipient's name</label>
+      <label class="first" for="name">Recipient's name</label>
       <input type="text" id="name" value="Sister Endurance Akpan Oyama">
 
       <div class="row2">
         <div>
-          <label>Meeting date</label>
+          <label for="date">Meeting date</label>
           <input type="date" id="date" value="2026-06-28">
         </div>
         <div>
-          <label>Time allotted</label>
+          <label for="time">Time allotted</label>
           <input type="text" id="time" value="7–10 minutes">
         </div>
       </div>
 
-      <label>Assignment</label>
+      <label for="assignment">Assignment</label>
       <input type="text" id="assignment" value="Give a Talk">
 
-      <label>Order / role (optional)</label>
+      <label for="order">Order / role (optional)</label>
       <input type="text" id="order" value="Second Speaker">
 
-      <label>Topic</label>
+      <label for="topic">Topic</label>
       <input type="text" id="topic" value="Enduring to the End">
 
-      <label>Scriptures to consider (one per line)</label>
+      <label for="scriptures">Scriptures to consider (one per line)</label>
       <textarea id="scriptures">2 Nephi 31:20
 Matthew 24:13
 Doctrine and Covenants 14:7
 Mosiah 5:15</textarea>
 
-      <label>Context paragraph</label>
+      <label for="context">Context paragraph</label>
       <textarea id="context">This topic aims to strengthen our resolve to remain faithful to Jesus Christ throughout our lives, persevere through challenges, and continue keeping our covenants.</textarea>
 
-      <label>Study resources (one per line — label | url, or just a note)</label>
+      <label for="resources">Study resources (one per line — label | url, or just a note)</label>
       <textarea id="resources">Gospel Topics study guide | https://www.churchofjesuschrist.org/study/manual/gospel-topics/endure-to-the-end-study-guide?lang=eng
 "The Strength to Endure," General Conference 2013 | https://www.churchofjesuschrist.org/study/general-conference/2013/10/the-strength-to-endure?lang=eng
 Also feel free to reference any other materials relating to the topic in the Gospel Library.</textarea>
 
-      <label>Signed by</label>
+      <label for="signoff">Signed by</label>
       <input type="text" id="signoff" value="The Bishopric">
     </div>
 
@@ -423,18 +389,21 @@ Also feel free to reference any other materials relating to the topic in the Gos
         <button id="printBtn" class="secondary">Print</button>
         <button id="fullscreenBtn" class="secondary">View</button>
       </div>
-      <div class="status" id="status"></div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
     </div>
     <div class="slip-overlay" id="slipOverlay" aria-hidden="true">
       <div class="overlay-content">
         <div class="overlay-toolbar">
           <button id="closeOverlay" class="secondary">✕ Close</button>
         </div>
-        <div class="slip slip-fullscreen" id="slipFullscreen"></div>
+        <div class="slip slip-fullscreen" id="slipFullscreen" tabindex="-1"></div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Hidden container for producing PDF/Print output from the shared data model -->
+<div id="outputDocument" class="output-document" aria-hidden="true"></div>
 
 <script>
 function esc(s){
@@ -467,83 +436,158 @@ function parseLines(id){
     .filter(Boolean);
 }
 
-function buildPlainText(){
-  const name = document.getElementById('name').value.trim();
-  const dateStr = formatDate(document.getElementById('date').value);
-  const time = document.getElementById('time').value.trim();
-  const assignment = document.getElementById('assignment').value.trim();
-  const order = document.getElementById('order').value.trim();
-  const topic = document.getElementById('topic').value.trim();
-  const scriptures = parseLines('scriptures');
-  const context = document.getElementById('context').value.trim();
-  const resources = parseLines('resources');
-  const signoff = document.getElementById('signoff').value.trim();
+// --- Shared data model and validation ---
+function getAssignmentData(){
+  return {
+    name: document.getElementById('name').value.trim(),
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value.trim(),
+    assignment: document.getElementById('assignment').value.trim(),
+    order: document.getElementById('order').value.trim(),
+    topic: document.getElementById('topic').value.trim(),
+    scriptures: parseLines('scriptures'),
+    context: document.getElementById('context').value.trim(),
+    resources: parseLines('resources'),
+    signoff: document.getElementById('signoff').value.trim()
+  };
+}
 
-  let assignmentLine = `*Assignment:* *${assignment}*`;
-  if(order) assignmentLine += ` (*${order}*)`;
+function validateAssignment(data){
+  const errors = {};
+  if(!data.name) errors.name = 'Recipient name is required.';
+  if(!data.date) errors.date = 'Meeting date is required.';
+  if(!data.assignment) errors.assignment = 'Assignment is required.';
+  if(!data.time) errors.time = 'Time allotted is required.';
+  return errors;
+}
 
+function showStatus(msg, isError){
+  const status = document.getElementById('status');
+  status.textContent = msg || '';
+  status.style.color = isError ? 'var(--error)' : 'var(--teal)';
+}
+
+// --- Formatting helpers ---
+function safeSplitResource(line){
+  const idx = line.indexOf('|');
+  if(idx === -1) return { label: line, url: '' };
+  return { label: line.slice(0, idx).trim(), url: line.slice(idx+1).trim() };
+}
+
+// Build plain text without Markdown markers, normalized blank lines
+function buildPlainText(data){
   const lines = [];
-  lines.push(`Dear ${name},`);
+  const dateStr = formatDate(data.date);
+
+  lines.push(`Dear ${data.name || '—'},`);
   lines.push('');
-  lines.push(`You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:`);
+  lines.push('You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:');
   lines.push('');
-  lines.push(`📅 *Date:* ${dateStr}`);
-  lines.push('');
-  lines.push(`🗒 ${assignmentLine}`);
-  lines.push('');
-  lines.push(`⏰ *Time Allotted:* *${time}*`);
-  lines.push('');
-  if(topic){
-    lines.push(`🎙 *Topic:* "${topic}"`);
-    lines.push('');
+  if(dateStr) lines.push(`Date: ${dateStr}`);
+  if(data.assignment) {
+    let a = `Assignment: ${data.assignment}`;
+    if(data.order) a += ` (${data.order})`;
+    lines.push(a);
   }
-  if(scriptures.length){
+  if(data.time) lines.push(`Time allotted: ${data.time}`);
+  if(data.topic) lines.push(`Topic: ${data.topic}`);
+
+  if(data.scriptures && data.scriptures.length){
+    lines.push('');
     lines.push('Scriptures to consider:');
-    scriptures.forEach(s => lines.push(`  • ${s}`));
-    lines.push('');
+    data.scriptures.forEach(s => lines.push(`- ${s}`));
   }
-  if(context){
-    lines.push(context);
+
+  if(data.context){
     lines.push('');
+    lines.push(data.context);
   }
-  lines.push(`We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.`);
+
   lines.push('');
-  lines.push(`May the Lord bless you as you serve faithfully. 🙏`);
+  lines.push('We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.');
   lines.push('');
-  
-  if(resources.length){
-    lines.push('');
-    lines.push('*Study resources:*');
-    lines.push('');
-    resources.forEach((r,i) => {
-      if(r.includes('|')){
-        const [label, url] = r.split('|').map(x => x.trim());
-        lines.push(`${i+1}. ${label}`);
-        lines.push(`   ${url}`);
+  lines.push('May the Lord bless you as you serve faithfully.');
+  lines.push('');
+
+  if(data.resources && data.resources.length){
+    lines.push('Study resources:');
+    data.resources.forEach((r, i) => {
+      const parsed = safeSplitResource(r);
+      if(parsed.url) {
+        lines.push(`${i+1}. ${parsed.label}`);
+        lines.push(`   ${parsed.url}`);
       } else {
-        lines.push(`${i+1}. ${r}`);
+        lines.push(`${i+1}. ${parsed.label}`);
       }
     });
+    lines.push('');
   }
-  
+
+  if(data.signoff) lines.push(`– ${data.signoff}`);
+
+  // Normalize blank lines: collapse >2 into 2
+  const out = [];
+  let blankStreak = 0;
+  for(const l of lines){
+    if(!l.trim()){
+      blankStreak++;
+      if(blankStreak <= 2) out.push('');
+    } else {
+      blankStreak = 0;
+      out.push(l);
+    }
+  }
+  return out.join('\n');
+}
+
+// Message text with emojis/formatting (optional)
+function buildMessageText(data){
+  const dateStr = formatDate(data.date);
+  const lines = [];
+  lines.push(`Dear ${data.name || '—'},`);
   lines.push('');
-  if(signoff){
-    lines.push(`– ${signoff}`);
+  if(dateStr) lines.push(`📅 Date: ${dateStr}`);
+  let a = `🗒 Assignment: ${data.assignment || '—'}`;
+  if(data.order) a += ` (${data.order})`;
+  lines.push(a);
+  if(data.time) lines.push(`⏰ Time allotted: ${data.time}`);
+  if(data.topic) lines.push(`🎙 Topic: ${data.topic}`);
+  if(data.scriptures && data.scriptures.length){
+    lines.push('');
+    lines.push('Scriptures to consider:');
+    data.scriptures.forEach(s => lines.push(` • ${s}`));
   }
+  if(data.context){
+    lines.push('');
+    lines.push(data.context);
+  }
+  lines.push('');
+  lines.push('May the Lord bless you as you serve faithfully. 🙏');
+  if(data.resources && data.resources.length){
+    lines.push('');
+    lines.push('Study resources:');
+    data.resources.forEach((r,i) => {
+      const parsed = safeSplitResource(r);
+      if(parsed.url) lines.push(`${i+1}. ${parsed.label} — ${parsed.url}`);
+      else lines.push(`${i+1}. ${parsed.label}`);
+    });
+  }
+  if(data.signoff) lines.push('');
+  if(data.signoff) lines.push(`– ${data.signoff}`);
   return lines.join('\n');
 }
 
-function render(){
-  const name = document.getElementById('name').value.trim() || '—';
-  const dateStr = formatDate(document.getElementById('date').value) || '—';
-  const time = document.getElementById('time').value.trim() || '—';
-  const assignment = document.getElementById('assignment').value.trim() || '—';
-  const order = document.getElementById('order').value.trim();
-  const topic = document.getElementById('topic').value.trim();
-  const scriptures = parseLines('scriptures');
-  const context = document.getElementById('context').value.trim();
-  const resources = parseLines('resources');
-  const signoff = document.getElementById('signoff').value.trim();
+function buildSlipHtml(data){
+  const dateStr = formatDate(data.date) || '—';
+  const name = data.name || '—';
+  const time = data.time || '—';
+  const assignment = data.assignment || '—';
+  const order = data.order || '';
+  const topic = data.topic || '';
+  const scriptures = data.scriptures || [];
+  const context = data.context || '';
+  const resources = data.resources || [];
+  const signoff = data.signoff || '';
 
   let html = '';
   html += `<p class="slip-greeting">Dear <span class="name">${esc(name)}</span>,</p>`;
@@ -573,11 +617,11 @@ function render(){
     html += `<hr class="divider">`;
     html += `<div class="slip-body"><p style="margin-bottom:4px;"><strong>Study resources:</strong></p></div>`;
     html += `<ol class="resources">` + resources.map(r => {
-      if(r.includes('|')){
-        const [label, url] = r.split('|').map(x => x.trim());
-        return `<li><strong>${esc(label)}</strong><br><small>${esc(url)}</small></li>`;
+      const parsed = safeSplitResource(r);
+      if(parsed.url){
+        return `<li><strong>${esc(parsed.label)}</strong><br><small>${esc(parsed.url)}</small></li>`;
       }
-      return `<li>${esc(r)}</li>`;
+      return `<li>${esc(parsed.label)}</li>`;
     }).join('') + `</ol>`;
   }
 
@@ -585,38 +629,67 @@ function render(){
     html += `<div class="sign-off">With love and appreciation,<span class="org">– ${esc(signoff)}</span></div>`;
   }
 
-  document.getElementById('slip').innerHTML = html;
+  return html;
 }
 
-// Event listeners
+// Build a simplified, fixed-width PDF/print document using the same data
+function buildPdfHtml(data){
+  const content = buildSlipHtml(data);
+  return `
+    <div class="slip" style="background:#fff;color:#000;max-width:720px;margin:0 auto;font-family:Arial,Helvetica,sans-serif;">
+      ${content}
+    </div>
+  `;
+}
+
+// --- Rendering and event wiring ---
+function render(){
+  const data = getAssignmentData();
+  document.getElementById('slip').innerHTML = buildSlipHtml(data);
+}
+
+// Bind inputs to render
 document.querySelectorAll('input, textarea').forEach(el => {
   el.addEventListener('input', render);
 });
 
-// Copy to clipboard
+// --- Copy to clipboard (plain text by default) ---
 document.getElementById('copyBtn').addEventListener('click', async () => {
-  const text = buildPlainText();
+  const data = getAssignmentData();
+  const errors = validateAssignment(data);
+  if(Object.keys(errors).length){
+    showStatus(Object.values(errors).join(' '), true);
+    return;
+  }
+  const text = buildPlainText(data);
   const status = document.getElementById('status');
   try{
     await navigator.clipboard.writeText(text);
-    status.textContent = '✓ Copied to clipboard';
+    showStatus('✓ Copied to clipboard');
   }catch(e){
+    // fallback
     const ta = document.createElement('textarea');
     ta.value = text;
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    status.textContent = '✓ Copied to clipboard';
+    showStatus('✓ Copied to clipboard');
   }
-  setTimeout(() => status.textContent = '', 2500);
+  setTimeout(()=> showStatus(''), 2500);
 });
 
 // Download as text
 document.getElementById('downloadBtn').addEventListener('click', () => {
+  const data = getAssignmentData();
+  const errors = validateAssignment(data);
+  if(Object.keys(errors).length){
+    showStatus(Object.values(errors).join(' '), true);
+    return;
+  }
   try {
-    const text = buildPlainText();
-    const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
+    const text = buildPlainText(data);
+    const name = data.name.replace(/[^a-z0-9]+/gi,'_') || 'assignment';
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -626,20 +699,31 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    const status = document.getElementById('status');
-    status.textContent = '✓ Downloaded TXT file';
-    setTimeout(() => status.textContent = '', 2500);
+    showStatus('✓ Downloaded TXT file');
+    setTimeout(()=> showStatus(''), 2500);
   } catch(e) {
     console.error('Download error:', e);
-    document.getElementById('status').textContent = '✗ Download failed';
+    showStatus('✗ Download failed', true);
   }
 });
 
-// Download as PDF
-document.getElementById('downloadPdfBtn').addEventListener('click', () => {
-  try {
-    const name = document.getElementById('name').value.trim().replace(/[^a-z0-9]+/gi,'_') || 'assignment';
-    const slipElement = document.getElementById('slip');
+// Download as PDF (uses a dedicated document built from the shared data model)
+document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('downloadPdfBtn');
+  const data = getAssignmentData();
+  const errors = validateAssignment(data);
+  if(Object.keys(errors).length){
+    showStatus(Object.values(errors).join(' '), true);
+    return;
+  }
+
+  try{
+    btn.disabled = true;
+    showStatus('Preparing PDF...');
+    const output = document.getElementById('outputDocument');
+    output.innerHTML = buildPdfHtml(data);
+    const slipElement = output.querySelector('.slip');
+    const name = data.name.replace(/[^a-z0-9]+/gi,'_') || 'assignment';
     const opt = {
       margin: [10, 10, 10, 10],
       filename: `assignment_${name}.pdf`,
@@ -647,47 +731,61 @@ document.getElementById('downloadPdfBtn').addEventListener('click', () => {
       html2canvas: { scale: 2, logging: false },
       jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
     };
-    html2pdf().set(opt).from(slipElement).save().then(() => {
-      const status = document.getElementById('status');
-      status.textContent = '✓ PDF downloaded';
-      setTimeout(() => status.textContent = '', 2500);
-    }).catch((err) => {
-      console.error('PDF error:', err);
-      document.getElementById('status').textContent = '✗ PDF generation failed';
-    });
-  } catch(e) {
-    console.error('PDF error:', e);
-    document.getElementById('status').textContent = '✗ PDF generation failed';
+
+    await html2pdf().set(opt).from(slipElement).save();
+    showStatus('✓ PDF downloaded');
+  }catch(err){
+    console.error('PDF error:', err);
+    showStatus('✗ PDF generation failed', true);
+  }finally{
+    document.getElementById('downloadPdfBtn').disabled = false;
+    setTimeout(()=> showStatus(''), 2500);
   }
 });
 
-// Print
+// Print - prepare outputDocument and call print
 document.getElementById('printBtn').addEventListener('click', () => {
+  const data = getAssignmentData();
+  const errors = validateAssignment(data);
+  if(Object.keys(errors).length){
+    showStatus(Object.values(errors).join(' '), true);
+    return;
+  }
+  const output = document.getElementById('outputDocument');
+  output.innerHTML = buildPdfHtml(data);
+  // Use print - print stylesheet will show outputDocument only
   window.print();
 });
 
 // Fullscreen view
-document.getElementById('fullscreenBtn').addEventListener('click', () => {
-  const overlay = document.getElementById('slipOverlay');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const overlay = document.getElementById('slipOverlay');
+const slipFullscreen = document.getElementById('slipFullscreen');
+const closeOverlay = document.getElementById('closeOverlay');
+
+fullscreenBtn.addEventListener('click', () => {
+  const data = getAssignmentData();
+  slipFullscreen.innerHTML = buildSlipHtml(data);
   overlay.classList.add('visible');
   overlay.setAttribute('aria-hidden', 'false');
-  document.getElementById('slipFullscreen').innerHTML = document.getElementById('slip').innerHTML;
+  // move focus into overlay
+  closeOverlay.focus();
 });
 
 // Close fullscreen
-document.getElementById('closeOverlay').addEventListener('click', () => {
-  const overlay = document.getElementById('slipOverlay');
+closeOverlay.addEventListener('click', () => {
   overlay.classList.remove('visible');
   overlay.setAttribute('aria-hidden', 'true');
+  fullscreenBtn.focus();
 });
 
 // Close on escape key
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape'){
-    const overlay = document.getElementById('slipOverlay');
     if(overlay.classList.contains('visible')){
       overlay.classList.remove('visible');
       overlay.setAttribute('aria-hidden', 'true');
+      fullscreenBtn.focus();
     }
   }
 });
