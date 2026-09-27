@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sacrament Meeting Assignment Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- jsPDF (text-based PDF generation) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
     --paper:#e5f3fb;
@@ -632,30 +634,146 @@ function buildSlipHtml(data){
   return html;
 }
 
-// Build a simplified, fixed-width PDF/print document using the same data
-function buildPdfHtml(data){
-  const content = buildSlipHtml(data);
-  // Return a small document fragment with reset styles so html2pdf places the slip at the top
-  return `
-    <!doctype html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <style>
-        html,body{margin:0;padding:0;background:#fff;height:100%;}
-        .slip{background:#fff;color:#000;max-width:720px;margin:0;padding:20mm;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;position:relative;top:0;left:0;}
-        .slip:before{display:none !important;}
-        /* ensure lists and paragraphs don't get clipped at top */
-        p, ul, ol { margin-top: 0; }
-      </style>
-    </head>
-    <body>
-      <div class="slip">
-        ${content}
-      </div>
-    </body>
-    </html>
-  `;
+// --- Text-based PDF generation using jsPDF ---
+function generatePdfUsingJsPDF(data){
+  // Use the jsPDF UMD bundle loaded in head
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 20; // mm
+  const usableWidth = pageWidth - margin * 2;
+  let x = margin;
+  let y = margin;
+  const lineHeight = 7; // mm approximate
+
+  function ensureSpace(needed){
+    if(y + needed > pageHeight - margin){
+      doc.addPage();
+      y = margin;
+    }
+  }
+
+  // Header / Greeting
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text(`Dear ${data.name || '—'},`, x, y);
+  y += 8;
+
+  // Intro paragraph
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  const intro = 'You have been assigned to participate in our upcoming Sacrament Meeting. Please find the details of your assignment below:';
+  const introLines = doc.splitTextToSize(intro, usableWidth);
+  ensureSpace(introLines.length * lineHeight);
+  doc.text(introLines, x, y);
+  y += introLines.length * lineHeight;
+  y += 2;
+
+  // Facts
+  doc.setFontSize(11);
+  function writeFact(label, value){
+    if(!value) return;
+    ensureSpace(lineHeight);
+    doc.setFont('helvetica', 'normal');
+    doc.text(label, x, y);
+    const labelWidth = 30; // position for values
+    doc.setFont('helvetica', 'bold');
+    const wrapped = doc.splitTextToSize(value, usableWidth - labelWidth);
+    doc.text(wrapped, x + labelWidth, y);
+    y += wrapped.length * lineHeight;
+  }
+
+  writeFact('Date:', formatDate(data.date) || '—');
+  writeFact('Assignment:', data.assignment + (data.order ? ` (${data.order})` : ''));
+  writeFact('Time allotted:', data.time || '—');
+  if(data.topic) writeFact('Topic:', `"${data.topic}"`);
+
+  // Scriptures
+  if(data.scriptures && data.scriptures.length){
+    y += 4;
+    ensureSpace(lineHeight);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Scriptures to consider:', x, y);
+    y += lineHeight;
+    doc.setFont('helvetica', 'normal');
+    data.scriptures.forEach(s => {
+      ensureSpace(lineHeight);
+      const bullet = `• ${s}`;
+      const wrapped = doc.splitTextToSize(bullet, usableWidth);
+      doc.text(wrapped, x, y);
+      y += wrapped.length * lineHeight;
+    });
+  }
+
+  // Context
+  if(data.context){
+    y += 4;
+    ensureSpace(lineHeight);
+    const wrapped = doc.splitTextToSize(data.context, usableWidth);
+    doc.text(wrapped, x, y);
+    y += wrapped.length * lineHeight;
+  }
+
+  // Closing paragraph
+  y += 4;
+  ensureSpace(lineHeight);
+  const closing = 'We kindly invite you to prayerfully prepare for this opportunity to uplift and inspire yourself and the ward members. Please arrive early and sit on the stand before the meeting begins.';
+  const closingLines = doc.splitTextToSize(closing, usableWidth);
+  doc.text(closingLines, x, y);
+  y += closingLines.length * lineHeight;
+  y += 2;
+  ensureSpace(lineHeight);
+  doc.text('May the Lord bless you as you serve faithfully.', x, y);
+  y += lineHeight;
+
+  // Resources
+  if(data.resources && data.resources.length){
+    y += 6;
+    ensureSpace(lineHeight);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Study resources:', x, y);
+    y += lineHeight;
+    data.resources.forEach((r, i) => {
+      ensureSpace(lineHeight);
+      const parsed = safeSplitResource(r);
+      doc.setFont('helvetica', 'normal');
+      const labelWrapped = doc.splitTextToSize(`${i+1}. ${parsed.label}`, usableWidth);
+      doc.text(labelWrapped, x, y);
+      y += labelWrapped.length * lineHeight;
+      if(parsed.url){
+        ensureSpace(lineHeight);
+        // render url in blue and add link annotation
+        doc.setTextColor(0, 0, 200);
+        doc.setFont('helvetica', 'normal');
+        const urlWrapped = doc.splitTextToSize(parsed.url, usableWidth);
+        // place each url line and add link annotation for the first line
+        for(let j=0;j<urlWrapped.length;j++){
+          const line = urlWrapped[j];
+          const py = y;
+          doc.text(line, x + 4, py);
+          if(j === 0){
+            const tw = doc.getTextWidth(line);
+            // link expects coords in user units (mm)
+            doc.link(x + 4, py - 2, tw, 6, { url: parsed.url });
+          }
+          y += lineHeight;
+          ensureSpace(lineHeight);
+        }
+        doc.setTextColor(0,0,0);
+      }
+    });
+  }
+
+  // Signoff
+  if(data.signoff){
+    y += 8;
+    ensureSpace(lineHeight);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`– ${data.signoff}`, x, y);
+  }
+
+  return doc;
 }
 
 // --- Rendering and event wiring ---
@@ -723,7 +841,7 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   }
 });
 
-// Download as PDF (uses a dedicated document built from the shared data model)
+// Download as PDF (now using jsPDF text API)
 document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
   const btn = document.getElementById('downloadPdfBtn');
   const data = getAssignmentData();
@@ -736,27 +854,15 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async () => 
   try{
     btn.disabled = true;
     showStatus('Preparing PDF...');
-    const output = document.getElementById('outputDocument');
-    // We set the innerHTML to a full document fragment including reset styles so the slip will render at the top
-    output.innerHTML = buildPdfHtml(data);
-    // Query the slip inside the hidden document
-    const slipElement = output.querySelector('.slip');
+    const doc = generatePdfUsingJsPDF(data);
     const name = data.name.replace(/[^a-z0-9]+/gi,'_') || 'assignment';
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: `assignment_${name}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, logging: false },
-      jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
-    };
-
-    await html2pdf().set(opt).from(slipElement).save();
+    doc.save(`assignment_${name}.pdf`);
     showStatus('✓ PDF downloaded');
   }catch(err){
     console.error('PDF error:', err);
     showStatus('✗ PDF generation failed', true);
   }finally{
-    document.getElementById('downloadPdfBtn').disabled = false;
+    btn.disabled = false;
     setTimeout(()=> showStatus(''), 2500);
   }
 });
